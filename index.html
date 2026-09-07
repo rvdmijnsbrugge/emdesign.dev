@@ -33,11 +33,19 @@
         grid-column: 1 / -1;
       }
       nav {
+        box-sizing: border-box;
+        scrollbar-width: none;
+        max-height: 100dvh;
         align-self: start;
         position: sticky;
+        grid-column: 1 / 3;
+        overflow-y: auto;
         grid-row: 1 / 3;
-        grid-column: 1;
+        padding: 0 0 3rem 0;
         top: 0;
+      }
+      nav:hover, nav:focus-within {
+        scrollbar-width: thin;
       }
       main {
         grid-template-columns: subgrid;
@@ -168,6 +176,11 @@
   <body>
     <nav>
       <h1><a href="#">Em</a></h1>
+      <a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">Demo</a>
+      <br>
+      <br>
+      <br>
+      <br>
       <a href="#systems">Systems</a>
       <br>
       <br>
@@ -223,6 +236,11 @@
     <main>
       <header>
         <h2>A design system for ecommerce—grounded in behavioral science.</h2>
+        <br>
+        <br>
+        <em><a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">View the demo</a> &rarr;</em>
+        <br>
+        <br>
       </header>
       <details id="systems" open>
         <summary>
@@ -435,5 +453,23 @@
         Copyright &copy; 2026 Rembrant Van der Mijnsbrugge. All rights reserved.
       </footer>
     </main>
+    <script>
+      const nav = document.querySelector("nav");
+      let manual = false;
+      const takeOver = () => manual = true;
+      nav.addEventListener("wheel", takeOver, { passive: true });
+      nav.addEventListener("touchmove", takeOver, { passive: true });
+      nav.addEventListener("mousedown", (e) => { if (e.target === nav) takeOver(); });
+      nav.addEventListener("keydown", (e) => { if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) takeOver(); });
+      const sync = () => {
+        if (manual) return;
+        const pageMax = document.documentElement.scrollHeight - innerHeight;
+        const navMax = nav.scrollHeight - nav.clientHeight;
+        if (pageMax > 0 && navMax > 0) nav.scrollTop = navMax * scrollY / pageMax;
+      };
+      addEventListener("scroll", sync, { passive: true });
+      addEventListener("resize", sync);
+      sync();
+    </script>
   </body>
 </html>
