@@ -106,11 +106,10 @@
       summary::-webkit-details-marker {
         display: none;
       }
-      summary::before {
-        color: rgb(0, 0, 0, 0.5625);
+      summary h3::before {
         content: "§ " / "";
       }
-      details details summary::before {
+      summary h4::before {
         content: "¶ " / "";
       }
       summary::after {
@@ -127,6 +126,7 @@
         text-decoration-line: underline;
         text-underline-offset: 2px;
         display: inline-block;
+        position: relative;
       }
       summary:hover h3, summary:hover h4, summary:focus h3, summary:focus h4 {
         text-decoration-color: rgb(0, 0, 0, 0.25);
@@ -139,10 +139,17 @@
       }
       aside {
         color: rgb(0, 0, 0, 0.5625);
+        position: relative;
         font-size: 13px;
       }
       aside::before {
         content: "‡ " / "";
+      }
+      summary h3::before, summary h4::before, aside::before {
+        color: rgb(0, 0, 0, 0.5625);
+        position: absolute;
+        white-space: pre;
+        right: 100%;
       }
       footer {
         color: rgb(0, 0, 0, 0.5625);
