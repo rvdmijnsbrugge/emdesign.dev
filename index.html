@@ -27,7 +27,7 @@
         font-size: 15px;
         display: grid;
         margin: 0 auto;
-        max-width: 768px;
+        max-width: 900px;
       }
       header {
         grid-column: 1 / -1;
@@ -82,6 +82,9 @@
       p {
         margin: 0 0 1rem 0;
       }
+      mi {
+        font-style: italic;
+      }
       a {
         text-decoration-color: rgb(0, 0, 0, 0.125);
         text-decoration-line: underline;
@@ -102,15 +105,13 @@
       details::details-content {
         grid-template-columns: subgrid;
         grid-column: 1 / -1;
+        align-items: start;
         display: grid;
       }
-      details details::details-content {
-        align-items: start;
-      }
-      details details p {
+      details p {
         grid-column: 1 / -3;
       }
-      details details aside {
+      details aside {
         grid-column: -3 / -1;
       }
       summary {
@@ -181,6 +182,10 @@
       <br>
       <br>
       <br>
+      <a href="#introduction">Introduction</a>
+      <br>
+      <br>
+      <br>
       <a href="#systems">Systems</a>
       <br>
       <br>
@@ -242,6 +247,38 @@
         <br>
         <br>
       </header>
+      <details id="introduction" open>
+        <summary>
+          <h3>Introduction</h3>
+        </summary>
+        <p>
+          <math>
+            <mrow>
+              <mi>Profit</mi>
+              <mo>=</mo>
+              <mi>Customer Lifetime Value</mi>
+              <mo>−</mo>
+              <mi>Customer Acquisition Cost</mi>
+            </mrow>
+          </math>
+        </p>
+        <aside>
+          Unit economics
+        </aside>
+        <p>
+          <math>
+            <mrow>
+              <mi>Revenue</mi>
+              <mo>=</mo>
+              <mi>Sessions</mi>
+              <mo>×</mo>
+              <mi>Conversion Rate</mi>
+              <mo>×</mo>
+              <mi>Average Order Value</mi>
+            </mrow>
+          </math>
+        </p>
+      </details>
       <details id="systems" open>
         <summary>
           <h3>Systems</h3>
