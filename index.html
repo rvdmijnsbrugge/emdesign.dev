@@ -808,7 +808,16 @@
         render(s < 1 ? BASE.map((v, i) => v + (target[i] - v) * k) : BASE);
       }
       canvas.addEventListener("click", play);
+      canvas.addEventListener("mouseenter", play);
       for (const a of document.querySelectorAll("a")) a.addEventListener("mouseenter", play);
+      // Every scroll replays the loop while at least one pixel of the canvas is in the viewport.
+      // Scroll events do not bubble, so listen in the capture phase to catch the page and any
+      // scrolling element (the nav, the formulas) alike.
+      const inFrame = () => {
+        const r = canvas.getBoundingClientRect();
+        return r.bottom > 0 && r.right > 0 && r.top < innerHeight && r.left < innerWidth;
+      };
+      document.addEventListener("scroll", () => { if (inFrame()) play(); }, { capture: true, passive: true });
       window.addEventListener("load", () => setTimeout(play, 1000));
     </script>
   </body>
