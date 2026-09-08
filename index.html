@@ -48,6 +48,9 @@
       nav:hover, nav:focus-within {
         scrollbar-width: thin;
       }
+      nav > div + div {
+        margin-top: 2rem;
+      }
       main {
         grid-template-columns: subgrid;
         grid-column: 3 / -1;
@@ -205,15 +208,26 @@
         grid-column: 1 / -1;
         font-size: 13px;
       }
-      /* Below the desktop width the nav leaves the side and becomes a table of contents above the page */
+      /* Below the desktop width the nav leaves the side and becomes a two-column table of contents above the page */
       @media (width < 990px) {
         nav {
+          grid-template-columns: subgrid;
           grid-column: 1 / -1;
           overflow: visible;
           position: static;
           max-height: none;
           grid-row: auto;
+          display: grid;
           padding: 0;
+        }
+        nav h1 {
+          grid-column: 1 / -1;
+        }
+        nav > div {
+          grid-column: span 4;
+        }
+        nav > div + div {
+          margin-top: 0;
         }
         main {
           grid-column: 1 / -1;
@@ -250,71 +264,72 @@
   <body>
     <nav>
       <h1><a href="#">Em</a></h1>
-      <a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">Demo</a>
-      <br>
-      <br>
-      <br>
-      <br>
-      <a href="mailto:r@mote.agency?subject=Em%20Licensing%20Inquiry">Purchase</a>
-      <br>
-      <br>
-      <br>
-      <br>
-      <a href="#introduction">Introduction</a>
-      <br>
-      <br>
-      <br>
-      <a href="#systems">Systems</a>
-      <br>
-      <br>
-      <a href="#grid">Grid</a>
-      <br>
-      <a href="#typography">Typography</a>
-      <br>
-      <a href="#colors">Colors</a>
-      <br>
-      <br>
-      <br>
-      <a href="#pages">Pages</a>
-      <br>
-      <br>
-      <a href="#home">Home</a>
-      <br>
-      <a href="#collection">Collection</a>
-      <br>
-      <a href="#product">Product</a>
-      <br>
-      <br>
-      <br>
-      <a href="#components">Components</a>
-      <br>
-      <br>
-      <a href="#header">Header</a>
-      <br>
-      <a href="#menu">Menu</a>
-      <br>
-      <a href="#search">Search</a>
-      <br>
-      <a href="#filters">Filters</a>
-      <br>
-      <a href="#cart">Cart</a>
-      <br>
-      <a href="#footer">Footer</a>
-      <br>
-      <a href="#figures">Figures</a>
-      <br>
-      <a href="#products">Products</a>
-      <br>
-      <br>
-      <br>
-      <a href="#sources">Sources</a>
-      <br>
-      <br>
-      <a href="#simon">Simon</a>
-      <br>
-      <a href="#mokyr">Mokyr</a>
-      <br>
-      <a href="#kahneman">Kahneman</a>
+      <div>
+        <a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">Demo</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="mailto:r@mote.agency?subject=Em%20Licensing%20Inquiry">Purchase</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="#introduction">Introduction</a>
+        <br>
+        <br>
+        <br>
+        <a href="#systems">Systems</a>
+        <br>
+        <br>
+        <a href="#grid">Grid</a>
+        <br>
+        <a href="#typography">Typography</a>
+        <br>
+        <a href="#colors">Colors</a>
+        <br>
+        <br>
+        <br>
+        <a href="#pages">Pages</a>
+        <br>
+        <br>
+        <a href="#home">Home</a>
+        <br>
+        <a href="#collection">Collection</a>
+        <br>
+        <a href="#product">Product</a>
+      </div>
+      <div>
+        <a href="#components">Components</a>
+        <br>
+        <br>
+        <a href="#header">Header</a>
+        <br>
+        <a href="#menu">Menu</a>
+        <br>
+        <a href="#search">Search</a>
+        <br>
+        <a href="#filters">Filters</a>
+        <br>
+        <a href="#cart">Cart</a>
+        <br>
+        <a href="#footer">Footer</a>
+        <br>
+        <a href="#figures">Figures</a>
+        <br>
+        <a href="#products">Products</a>
+        <br>
+        <br>
+        <br>
+        <a href="#sources">Sources</a>
+        <br>
+        <br>
+        <a href="#simon">Simon</a>
+        <br>
+        <a href="#mokyr">Mokyr</a>
+        <br>
+        <a href="#kahneman">Kahneman</a>
+      </div>
     </nav>
     <main>
       <header>
