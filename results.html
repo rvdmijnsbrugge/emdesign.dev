@@ -1,0 +1,100 @@
+<!--
+
+  © 2026 Rembrant Van der Mijnsbrugge
+  All rights reserved
+
+  Contact r@mote.agency for licensing
+
+  Revenue = Session × Conversion Rate × Average Order Value
+  Profit = Customer Lifetime Value ÷ Customer Acquisition Cost
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="em.css">
+    <title>Em – Results</title>
+  </head>
+  <body>
+    <button popovertarget="results">Results</button>
+    <dialog id="results" popover>
+      <header>
+        <form role="search">
+          <input type="search" placeholder="Search"/>
+          <button type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.5 10.5" height="10.5" width="10.5" stroke="currentColor" fill="none">
+              <circle r="4.25" cx="5.25" cy="5.25"/>
+              <polyline points="9.5,9.5 8.5,8.5"/>
+            </svg>
+          </button>
+        </form>
+        <button popovertarget="results">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.5 10.5" height="10.5" width="10.5" stroke="currentColor" fill="none">
+            <polyline points="1,1 9.5,9.5"/>
+            <polyline points="1,9.5 9.5,1"/>
+          </svg>
+        </button>
+      </header>
+      <p>Suggestions</p>
+      <menu>
+        <li><button type="button"><mark>Black</mark> gabardine trousers</button></li>
+        <li><button type="button"><mark>Black</mark> leather gloves</button></li>
+        <li><button type="button"><mark>Black</mark> muslin jackets</button></li>
+        <li><button type="button"><mark>Black</mark> poplin shirts</button></li>
+        <li><button type="button"><mark>Black</mark> twill dresses</button></li>
+      </menu>
+      <output>
+        <p>Results</p>
+        <ol>
+          <li>
+            <article>
+              <a href="product">
+                <figure></figure>
+                <mark>Black</mark> dress
+              </a>
+            </article>
+          </li>
+          <li>
+            <article>
+              <a href="product">
+                <figure></figure>
+                <mark>Black</mark> shirt
+              </a>
+            </article>
+          </li>
+          <li>
+            <article>
+              <a href="product">
+                <figure></figure>
+                <mark>Black</mark> jacket
+              </a>
+            </article>
+          </li>
+          <li>
+            <article>
+              <a href="product">
+                <figure></figure>
+                <mark>Black</mark> coat
+              </a>
+            </article>
+          </li>
+          <li>
+            <article>
+              <a href="product">
+                <figure></figure>
+                <mark>Black</mark> sweater
+              </a>
+            </article>
+          </li>
+        </ol>
+      </output>
+      <footer>
+        <i>138 Results</i>
+        <a href="collection">View all</a>
+      </footer>
+    </dialog>
+    <script>document.querySelector("dialog[popover]").showPopover()</script>
+  </body>
+</html>
