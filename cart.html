@@ -1,0 +1,88 @@
+<!--
+
+  © 2026 Rembrant Van der Mijnsbrugge
+  All rights reserved
+
+  Contact r@mote.agency for licensing
+
+  Revenue = Session × Conversion Rate × Average Order Value
+  Profit = Customer Lifetime Value ÷ Customer Acquisition Cost
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="em.css">
+    <title>Em – Cart</title>
+  </head>
+  <body>
+    <button popovertargetaction="show" popovertarget="cart">Cart</button>
+    <dialog id="cart" popover>
+      <header>
+        <button popovertargetaction="hide" popovertarget="cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.5 10.5" height="10.5" width="10.5" stroke="currentColor" fill="none">
+            <polyline points="1,1 9.5,9.5"/>
+            <polyline points="1,9.5 9.5,1"/>
+          </svg>
+        </button>
+      </header>
+      <ol>
+        <li>
+          <article>
+            <a href="product"><figure></figure></a>
+            <div>
+              Deerskin leather gloves
+              <data value="138">$138</data>
+              <dl>
+                <dt>Color</dt><dd>Black</dd>
+                <dt>Size</dt><dd>9</dd>
+                <dt>Quantity</dt><dd>1</dd>
+              </dl>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article>
+            <a href="product"><figure></figure></a>
+            <div>
+              Wool gabardine trousers
+              <data value="138">$318</data>
+              <dl>
+                <dt>Color</dt><dd>Black</dd>
+                <dt>Size</dt><dd>32</dd>
+                <dt>Quantity</dt><dd>1</dd>
+              </dl>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article>
+            <a href="product"><figure></figure></a>
+            <div>
+              Linen muslin jacket
+              <data value="138">$813</data>
+              <dl>
+                <dt>Color</dt><dd>Bone</dd>
+                <dt>Size</dt><dd>40</dd>
+                <dt>Quantity</dt><dd>1</dd>
+              </dl>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+        </li>
+      </ol>
+      <footer>
+        <i>Subtotal</i>
+        <data value="3180">$1,830</data>
+        <form action="#checkout">
+          <button type="submit">Checkout</button>
+        </form>
+      </footer>
+    </dialog>
+    <script>document.querySelector("dialog[popover]").showPopover()</script>
+  </body>
+</html>

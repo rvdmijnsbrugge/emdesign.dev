@@ -1,0 +1,3516 @@
+/*
+  © 2026 Rembrant Van der Mijnsbrugge
+  All rights reserved
+  Contact r@mote.agency for licensing
+  Revenue = Session × Conversion Rate × Average Order Value
+  Profit = Customer Lifetime Value ÷ Customer Acquisition Cost
+*/
+
+/* 
+.accordion .details__header {
+  padding-block: calc(var(--leading) / 2);
+  min-height: var(--button-size);
+}
+.accordion--dividers .details-content {
+  padding-block-end: calc(var(--leading) / 2);
+} */
+
+/* theme-styles-variables.liquid */
+:root {
+  /* Badges */
+  --badge-rectangle-padding-block: 0;
+  --badge-rectangle-padding-inline: 0;
+}
+/* product-badges-styles.liquid */
+.product-badges {
+  mix-blend-mode: difference;
+}
+.product-badges__badge {
+  background: transparent !important;
+  color: rgb(var(--color-white-rgb) / calc(10 / 16)) !important;
+}
+
+/* CodePen */
+/* Everything here sits at element specificity, :where() keeps the variants there too, so a component
+   rule (#cart, #filters, body > footer, article:has(nav)) wins without effort */
+@scope (html:not(:has([id*="shopify"]))) {
+  button {
+    padding: calc(var(--leading) * 0.25) 0;
+    min-width: calc(var(--leading) * 1.5);
+    color: rgb(var(--dark) / 0.875);
+    background: transparent;
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+  }
+  button:where(:hover) {
+    color: rgb(var(--dark) / 1);
+  }
+
+  /* Submit is the primary: ink behind white text */
+  button:where([type="submit"]) {
+    padding: calc(var(--leading) * 0.25) calc(var(--leading) * 0.75);
+    background: rgb(var(--dark) / 0.875);
+    color: rgb(255 255 255 / 1);
+  }
+  button:where([type="submit"]:hover) {
+    background: rgb(var(--dark) / 1);
+  }
+
+  /* Reset is the secondary: a trace of ink behind the text */
+  button:where([type="reset"]) {
+    padding: calc(var(--leading) * 0.25) calc(var(--leading) * 0.75);
+    background: rgb(var(--dark) / 0.03125);
+    color: rgb(var(--dark) / 1);
+  }
+  button:where([type="reset"]:hover) {
+    background: rgb(var(--dark) / 0.0625);
+  }
+
+  /* The popover close button is a 1.5-leading square: half a leading of padding on every side of the
+     10.5px X, and no focus ring, as on the store's drawer close buttons */
+  button:where([popovertargetaction="hide"]) {
+    padding: calc(var(--leading) * 0.5);
+    outline: none;
+  }
+  button:where([popovertargetaction="hide"]:focus) {
+    color: rgb(var(--dark) / 1);
+  }
+
+  button:where(:disabled) {
+    opacity: 0.25;
+  }
+
+  /* A button in a menu is plain text on the line: search suggestions, product sizes */
+  menu button {
+    color: inherit;
+    padding: 0;
+  }
+}
+
+/* Shopify */
+:root {
+  --minimum-touch-target: calc(var(--leading) * 2);
+}
+
+/* 
+:root {
+  --button-size: calc(var(--leading) * 2);
+  --button-padding-inline: var(--leading);
+  --button-padding-block: calc(var(--leading) / 2);
+  --height-buy-buttons: calc(var(--leading) * 2);
+}
+*/
+
+/* CodePen */
+@scope (html:not(:has([id*="shopify"]))) {
+  #cart {
+    height: calc(100dvh - var(--leading) * 1);
+    margin: calc(var(--leading) * 0.5);
+    grid-template-rows: auto 1fr auto;
+    width: calc(100vw / 8 * 2);
+    margin-inline-start: auto;
+    min-width: 360px;
+    border: none;
+    padding: 0;
+  }
+  #cart:popover-open {
+    display: grid;
+  }
+
+  #cart header {
+    place-content: end;
+    display: grid;
+  }
+
+  #cart ol {
+    gap: calc(21px * 0.5);
+    align-content: start;
+    list-style: none;
+    overflow-y: auto;
+    display: grid;
+    padding: 0;
+    margin: 0;
+  }
+  #cart article {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 calc(21px * 0.5);
+    gap: calc(21px * 0.5);
+    display: grid;
+  }
+  #cart a {
+    display: block;
+  }
+  #cart figure {
+    background: rgb(240 238 233 / 1);
+    aspect-ratio: 4 / 5;
+    margin: 0;
+  }
+  #cart data {
+    display: block;
+  }
+  #cart dl {
+    margin: calc(21px * 1) 0;
+  }
+  #cart dt {
+    display: inline;
+  }
+  #cart dt:after {
+    content: ': ';
+  }
+  #cart dd {
+    display: inline;
+    margin: 0;
+  }
+  #cart dd:after {
+    display: block;
+    content: '';
+  }
+
+  #cart footer {
+    grid-template-columns: 1fr auto;
+    padding: calc(21px * 0.5);
+    gap: calc(21px * 0.5);
+    display: grid;
+  }
+  #cart form {
+    grid-column: 1 / -1;
+    display: grid;
+  }
+
+  #empty {
+    height: calc(100dvh - var(--leading) * 1);
+    grid-template-rows: auto 1fr auto auto;
+    margin: calc(var(--leading) * 0.5);
+    width: calc(100vw / 8 * 2);
+    margin-inline-start: auto;
+    min-width: 360px;
+    border: none;
+    padding: 0;
+  }
+  #empty:popover-open {
+    display: grid;
+  }
+
+  #empty header {
+    place-content: end;
+    display: grid;
+  }
+
+  #empty p {
+    padding: 0 calc(var(--leading) * 0.5);
+  }
+  #empty p:first-of-type {
+    gap: calc(var(--leading) * 0.5);
+    place-content: center;
+    text-align: center;
+    display: grid;
+  }
+
+  #empty ol {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 0.5);
+    align-content: start;
+    list-style: none;
+    overflow-y: auto;
+    display: grid;
+    margin: 0;
+  }
+  #empty a {
+    padding: 0 0 calc(var(--leading) * 0.5) 0;
+    gap: calc(21px * 0.5);
+    display: grid;
+  }
+  #empty figure {
+    background: rgb(240 238 233 / 1);
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* base.css ::backdrop */
+#cart-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--layer-temporary) - 1);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+  background-color: rgb(255 255 255 / 0.75);
+  background-blend-mode: multiply;
+  background-size: 100px 100px;
+  background-repeat: repeat;
+  backdrop-filter: blur(21px);
+}
+/* theme-drawer-styles.liquid */
+#cart-drawer .theme-drawer__dialog {
+  border: none;
+  background: rgb(255 255 255 / 0.9375);
+  backdrop-filter: blur(21px);
+}
+#cart-drawer .theme-drawer__close-button {
+  width: calc(var(--leading) * 1.5);
+  height: calc(var(--leading) * 1.5);
+  padding: calc(var(--leading) / 2);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: rgb(0 0 0 / 0.875);
+}
+#cart-drawer .theme-drawer__close-button:hover,
+#cart-drawer .theme-drawer__close-button:focus-visible {
+  background: none;
+  color: rgb(0 0 0 / 1);
+}
+#cart-drawer .theme-drawer__close-button .svg-wrapper {
+  display: none;
+}
+#cart-drawer .theme-drawer__close-button::before {
+  content: '';
+  width: calc(var(--leading) / 2);
+  height: calc(var(--leading) / 2);
+  background: currentColor;
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10.5 10.5' stroke='black' fill='none'><polyline points='1,1 9.5,9.5'/><polyline points='1,9.5 9.5,1'/></svg>") center / contain no-repeat;
+}
+/* The header is just the close button, flush top-right, in both the empty and the filled state */
+#cart-drawer .theme-drawer__header {
+  display: grid;
+  place-content: end;
+  padding: 0;
+}
+/* The "Cart" title and count badge leave the visual layout but stay in the tree: the dialog's aria-labelledby points at it */
+#cart-drawer .theme-drawer__header .theme-drawer__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+#cart-drawer .cart-drawer--empty .theme-drawer__header {
+  display: grid;
+  place-content: end;
+  padding: 0;
+}
+#cart-drawer .cart-drawer--empty .theme-drawer__title {
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+}
+/* cart-drawer.liquid */
+/* Stock sets the paragraph line-height to 1 inside the drawer; everything here sits on the leading */
+#cart-drawer cart-drawer-component {
+  --font-paragraph--line-height: var(--leading);
+}
+#cart-drawer .cart-drawer__content {
+  background: none;
+}
+#cart-drawer .cart-drawer--empty .cart-drawer__content {
+  gap: calc(var(--leading) / 2);
+  padding: var(--leading) calc(var(--leading) / 2);
+}
+/* The list takes the room between header and summary and scrolls on its own, so the summary never overlaps it */
+#cart-drawer .cart-drawer__items:has(.cart-form) {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-inline: calc(var(--leading) / 2);
+}
+#cart-drawer .cart-drawer__items .cart-items__table-row {
+  padding: 0;
+  margin: 0 0 calc(var(--leading) / 2);
+  border: none;
+}
+#cart-drawer .cart-drawer__items .cart-items__table-row:last-child {
+  margin-bottom: 0;
+}
+#cart-drawer .cart-drawer__summary {
+  align-items: stretch;
+  gap: 0;
+  padding: calc(var(--leading) / 2);
+  background: none;
+  mask-image: none;
+}
+/* cart-products.liquid */
+#cart-drawer .cart-items__table td {
+  padding: 0;
+}
+/* Line item: image left, text right, half a leading apart; the trailing 1fr row absorbs the image's extra height */
+#cart-drawer .cart-items__table-row {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(6, auto) 1fr;
+  grid-template-areas:
+    'media details'
+    'media price'
+    'media variants'
+    'media unit_price'
+    'media quantity'
+    'media error'
+    'media .';
+  gap: 0 calc(var(--leading) / 2);
+  align-items: start;
+}
+#cart-drawer .cart-items__media-container {
+  aspect-ratio: 4 / 5;
+  background-color: rgb(240 238 233 / 1);
+}
+/* A line item without an image still gets the figure */
+#cart-drawer .cart-items__media:not(:has(*))::before {
+  content: '';
+  display: block;
+  aspect-ratio: 4 / 5;
+  background-color: rgb(240 238 233 / 1);
+}
+#cart-drawer .cart-items__details {
+  color: var(--color-foreground);
+}
+#cart-drawer .cart-items__details > * {
+  margin: 0;
+}
+#cart-drawer .cart-items__details,
+#cart-drawer .cart-items__details *,
+#cart-drawer .cart-items__price {
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+}
+#cart-drawer .cart-items__title:hover,
+#cart-drawer .cart-items__title:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+/* The line total sits under the title; the per-unit price line is dropped */
+#cart-drawer .cart-items__price {
+  width: auto;
+  min-width: 0;
+  text-align: start;
+}
+#cart-drawer .cart-items__price text-component,
+#cart-drawer .cart-totals__total-value {
+  line-height: var(--leading);
+}
+#cart-drawer .cart-items__unit-price-wrapper {
+  display: none;
+}
+/* Options read "Size: S": the option name comes out of hiding in front of its value */
+#cart-drawer .cart-items__variants-wrapper {
+  margin-top: var(--leading);
+}
+#cart-drawer .cart-items__variant dt.visually-hidden {
+  position: static !important;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+/* No options: the quantity line carries the leading that the options would have */
+#cart-drawer .cart-items__details:has(.cart-items__variants-wrapper:empty) + .cart-items__quantity {
+  margin-top: var(--leading);
+}
+#cart-drawer .cart-items__quantity {
+  display: block;
+  width: auto;
+  margin: 0;
+}
+#cart-drawer .cart-items__quantity-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0;
+  width: auto;
+}
+#cart-drawer .cart-items__quantity-controls > .volume-pricing-info {
+  margin: 0;
+}
+/* "Remove" is the text link the icon button always carried */
+#cart-drawer .cart-items__remove:not([hidden]) {
+  display: block;
+  width: auto;
+  height: var(--leading);
+  min-height: 0;
+  margin-top: var(--leading);
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: var(--leading);
+  text-align: start;
+  text-transform: none;
+}
+#cart-drawer .cart-items__remove:hover,
+#cart-drawer .cart-items__remove:focus-visible {
+  background: none;
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+#cart-drawer .cart-items__remove svg {
+  display: none;
+}
+#cart-drawer .cart-items__remove .visually-hidden {
+  position: static !important;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+/* quantity-selector-styles.liquid */
+/* "Quantity: 1" — the stepper buttons go, the number stays an editable field on the line */
+#cart-drawer .cart-items__quantity .quantity-selector {
+  display: inline-flex;
+  align-items: baseline;
+  flex: none;
+  align-self: auto;
+  width: auto;
+  height: var(--leading);
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+}
+#cart-drawer .cart-items__quantity .quantity-selector::before {
+  content: 'Quantity:\00a0';
+}
+#cart-drawer .cart-items__quantity .quantity-selector :is(.quantity-minus, .quantity-plus) {
+  display: none;
+}
+#cart-drawer .cart-items__quantity .quantity-selector input[type='number'] {
+  width: 3ch;
+  max-width: none;
+  height: var(--leading);
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: var(--leading);
+  text-align: start;
+}
+@supports (field-sizing: content) {
+  #cart-drawer .cart-items__quantity .quantity-selector input[type='number'] {
+    field-sizing: content;
+    width: auto;
+    min-width: 1ch;
+  }
+}
+/* cart-summary.liquid */
+/* The two totals wrappers dissolve so total, checkout button and tax note are siblings the summary
+   can order; this also drops the hairline and leading of space stock adds above the totals once the
+   discount field is off */
+#cart-drawer .cart-totals,
+#cart-drawer .cart-totals__container {
+  display: contents;
+}
+#cart-drawer .cart-totals__original-container,
+#cart-drawer .cart-totals__original-container *,
+#cart-drawer .cart-totals__total-label,
+#cart-drawer .cart-totals__total-value {
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+}
+#cart-drawer .cart-totals__total {
+  font-weight: var(--font-paragraph--weight);
+}
+/* The tax note stays, centred half a leading under the checkout button, in the drawer's own type:
+   13px on the leading, foreground colour, links muted-underlined */
+#cart-drawer .cart-totals__tax-note,
+#cart-drawer .cart-totals__tax-note small {
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  color: var(--color-foreground);
+}
+#cart-drawer .cart-totals__tax-note {
+  order: 1;
+  justify-content: center;
+  margin-top: calc(var(--leading) / 2);
+  text-align: center;
+}
+#cart-drawer .cart-totals__tax-note a {
+  color: inherit;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.125);
+  text-underline-offset: 2px;
+}
+#cart-drawer .cart-totals__tax-note a:hover,
+#cart-drawer .cart-totals__tax-note a:focus-visible {
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+#cart-drawer .cart-totals__total-label {
+  font-style: italic;
+}
+/*
+  Reads "Subtotal" like the prototype. The stock "Estimated total" string is kept in the DOM at
+  font-size 0 for assistive tech (the pseudo-element's alt text is empty), and the swap is skipped
+  when a cart-level discount already prints its own subtotal row above.
+*/
+#cart-drawer .cart-totals:has(.cart-totals__original-container:empty) .cart-totals__total-label {
+  font-size: 0;
+  line-height: 0;
+}
+#cart-drawer .cart-totals:has(.cart-totals__original-container:empty) .cart-totals__total-label::before {
+  content: 'Subtotal' / '';
+  font-size: var(--font-paragraph--size);
+  font-style: italic;
+  line-height: var(--leading);
+}
+#cart-drawer .cart__ctas {
+  gap: 0;
+  margin-top: calc(var(--leading) / 2);
+}
+#cart-drawer .cart__checkout-button {
+  height: calc(var(--leading) * 1.5);
+  min-height: 0;
+  padding: calc(var(--leading) / 4) calc(var(--leading) * 0.75);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: rgb(0 0 0 / 0.875);
+  color: rgb(255 255 255 / 1);
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: var(--leading);
+  text-transform: none;
+}
+#cart-drawer .cart__checkout-button:hover,
+#cart-drawer .cart__checkout-button:focus-visible {
+  background-color: rgb(0 0 0 / 1);
+}
+#cart-drawer .cart__checkout-button .button-text {
+  line-height: inherit;
+}
+/* cart-products.liquid */
+#cart-drawer .cart-items__empty-button {
+  display: block;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0 calc(var(--leading) / 2);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: var(--leading);
+  text-transform: none;
+  text-decoration: underline;
+  text-decoration-color: rgb(0 0 0 / 0.125);
+  text-underline-offset: 2px;
+}
+#cart-drawer .cart-items__empty-button:hover,
+#cart-drawer .cart-items__empty-button:focus-visible {
+  background: none;
+  color: inherit;
+  text-decoration-color: rgb(0 0 0 / 0.25);
+}
+#cart-drawer .cart-items__empty-button .button-text {
+  line-height: inherit;
+}
+/* header-actions.liquid */
+/* In the text header the count is plain text after the word, in the word's own style: "Cart 1" */
+@media screen and (min-width: 750px) {
+  .header-actions__cart-icon--text.header-actions__cart-icon {
+    gap: 0;
+  }
+  .header-actions__cart-icon--text.header-actions__cart-icon .cart-bubble {
+    right: auto;
+    width: auto;
+    aspect-ratio: auto;
+    padding-inline: 0;
+    border-radius: 0;
+    color: inherit;
+  }
+  /* cart-bubble.liquid */
+  .header-actions__cart-icon--text .cart-bubble__background {
+    display: none;
+  }
+  .header-actions__cart-icon--text .cart-bubble__text {
+    font-size: inherit;
+    line-height: inherit;
+  }
+  /* A word space in front of the count, as the flex gap is zeroed */
+  .header-actions__cart-icon--text .cart-bubble__text::before {
+    content: '\00a0';
+  }
+}
+/* On mobile the count inside the icon is 11px. Sized on the count span itself: icons.css sets the
+   wrapper (.cart-bubble__text) to inherit the header size, and nothing else targets the span */
+@media screen and (max-width: 749px) {
+  header-actions .header-actions__cart-icon .cart-bubble__text-count {
+    font-size: 11px;
+  }
+}
+/* theme-drawer-styles.liquid */
+/* Like the menu drawer: half a leading from the edges at every width, above the blurred backdrop.
+   Below 750px the panel spans the viewport minus a leading; from 750px it is the 360px right panel */
+#cart-drawer .theme-drawer__dialog {
+  --theme-drawer-width: max(calc(100vw / 8 * 2), 360px);
+  z-index: calc(var(--layer-temporary) + var(--drawer-stack-order, 0));
+  top: calc(var(--leading) / 2);
+  width: var(--theme-drawer-width);
+  max-width: none;
+  height: calc(100dvh - var(--leading));
+}
+#cart-drawer .theme-drawer__dialog[open] {
+  right: calc(var(--leading) / 2);
+}
+body:has(#cart-drawer[open]) #cart-backdrop {
+  display: block;
+}
+/* Stock pushes the page aside by the drawer width at every viewport; the panel floats over it instead */
+body:has(#cart-drawer[open]) .page-wrapper {
+  margin-right: 0;
+}
+@media screen and (max-width: 749px) {
+  #cart-drawer .theme-drawer__dialog {
+    --theme-drawer-width: calc(100% - var(--leading));
+  }
+}
+@media screen and (min-width: 990px) {
+  body:has(#cart-drawer[open]) shopify-account::part(dialog) {
+    translate: none;
+  }
+}
+
+/* CodePen */
+@scope (html:not(:has([id*="shopify"]))) {
+  #filters {
+    max-height: calc(100% - var(--leading) * 1);
+    max-width: calc(100% - var(--leading) * 1);
+    margin: calc(var(--leading) * 0.5);
+    margin-top: auto;
+    height: 75vh;
+    border: none;
+    width: 100%;
+    padding: 0;
+  }
+  #filters:popover-open {
+    grid-template-rows: auto 1fr auto;
+    display: grid;
+  }
+  @media(min-width: 768px) {
+    #filters {
+      height: calc(100dvh / 8 * 5);
+      width: calc(100vw / 8 * 5);
+      margin-inline: auto;
+    }
+  }
+
+  #filters nav {
+    padding: calc(var(--leading) * 1.5) calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 0.5);
+    align-content: start;
+    display: grid;
+  }
+  #filters details summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  #filters details summary:hover {
+    text-decoration: underline rgb(var(--dark) / 0.25);
+    text-underline-offset: 2px;
+  }
+  #filters details summary::after {
+    float: right;
+    content: '+';
+  }
+  #filters details[open] summary::after {
+    content: '–';
+  }
+  #filters ul {
+    padding: calc(var(--leading) * 1) 0 calc(var(--leading) * 1.5) 0;
+    gap: calc(var(--leading) * 0.5) calc(var(--leading) * 1);
+    grid-template-columns: repeat(2, 1fr);
+    list-style: none;
+    display: grid;
+    margin: 0;
+  }
+  #filters details:last-child ul {
+    padding: calc(var(--leading) * 1) 0 0 0;
+  }
+  #filters label {
+    gap: calc(var(--leading) * 0.25);
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    display: grid;
+  }
+  #filters input {
+    margin: 0;
+  }
+
+  #filters footer {
+    grid-template-columns: repeat(2, 1fr);
+    padding: calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 0.5);
+    display: grid;
+  }
+}
+
+/* filters.liquid */
+@media screen and (min-width: 750px) {
+  .facets-block-wrapper--horizontal {
+    grid-row: 1;
+  }
+  .facets-toggle {
+    display: flex;
+    grid-row: 1;
+    grid-column: var(--centered);
+  }
+  .facets-toggle__button {
+    display: flex;
+  }
+}
+@media screen and (max-width: 749px) {
+  .facets--horizontal {
+    display: flex;
+    height: var(--minimum-touch-target);
+    align-items: center;
+    padding-block: 0;
+    padding-inline: var(--padding-lg);
+  }
+  .facets-toggle {
+    margin-top: calc(-1 * var(--minimum-touch-target));
+  }
+}
+.facets-block-wrapper--horizontal {
+  pointer-events: none;
+}
+.facets-toggle {
+  flex-direction: row-reverse;
+  padding-inline: 0;
+}
+.facets-toggle__button .svg-wrapper {
+  display: none;
+}
+.facets--horizontal .facets__form > :not(.products-count-wrapper) {
+  display: none;
+}
+.facets--horizontal .products-count-wrapper {
+  display: flex;
+  margin-left: 0;
+  font-style: italic;
+}
+
+/* The drawer is the prototype's #filters popover: a frosted card five eighths of the viewport wide and
+   tall, centred, resting half a leading above the bottom edge. This block compiles before the stock
+   drawer and facets CSS, so every override carries the #filters-drawer prefix to outrank them */
+
+/* base.css ::backdrop */
+#filters-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--layer-temporary) - 1);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+  background-color: rgb(255 255 255 / 0.75);
+  background-blend-mode: multiply;
+  background-size: 100px 100px;
+  background-repeat: repeat;
+  backdrop-filter: blur(21px);
+}
+/* Below 990px the drawer opens with showModal(), so the native backdrop gets the same treatment */
+#filters-drawer .theme-drawer__dialog::backdrop {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+  background-color: rgb(255 255 255 / 0.75);
+  background-blend-mode: multiply;
+  background-size: 100px 100px;
+  background-repeat: repeat;
+  backdrop-filter: blur(21px);
+}
+
+/* theme-drawer-styles.liquid */
+#filters-drawer .theme-drawer__dialog {
+  --checkbox-size: 13px;
+  --checkbox-border-radius: calc(var(--leading) / 8);
+  inset: 0;
+  width: calc(100vw / 8 * 5);
+  height: calc(100dvh / 8 * 5);
+  max-width: calc(100% - var(--leading));
+  max-height: calc(100% - var(--leading));
+  margin: auto auto calc(var(--leading) / 2);
+  border: none;
+  background: rgb(255 255 255 / 0.9375);
+  backdrop-filter: blur(21px);
+}
+/* The prototype's phone layout: a three-quarter-height sheet, full width less a leading */
+@media screen and (max-width: 749px) {
+  #filters-drawer .theme-drawer__dialog {
+    width: calc(100% - var(--leading));
+    height: 75vh;
+  }
+}
+/* Stock slides the panel in by animating `right`, which fights a centred card, so the card fades instead.
+   close() waits for animationend, so the closing animation has to exist */
+#filters-drawer .theme-drawer__dialog--opening,
+#filters-drawer .theme-drawer__dialog--opening-inline-start {
+  animation: filters-drawer-in var(--animation-speed) var(--animation-timing-fade-in);
+}
+#filters-drawer .theme-drawer__dialog--closing {
+  animation: filters-drawer-out var(--animation-speed) var(--animation-timing-fade-out) forwards;
+}
+@keyframes filters-drawer-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes filters-drawer-out {
+  to {
+    opacity: 0;
+  }
+}
+/* The header is just the close button, flush top-right like the cart drawer */
+#filters-drawer .theme-drawer__header {
+  display: grid;
+  place-content: end;
+  padding: 0;
+}
+/* The "Filter" title and count badge leave the visual layout but stay in the tree: the dialog's aria-labelledby points at it */
+#filters-drawer .theme-drawer__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+#filters-drawer .theme-drawer__close-button {
+  width: calc(var(--leading) * 1.5);
+  height: calc(var(--leading) * 1.5);
+  margin-inline-start: 0;
+  padding: calc(var(--leading) / 2);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: rgb(0 0 0 / 0.875);
+}
+#filters-drawer .theme-drawer__close-button:hover,
+#filters-drawer .theme-drawer__close-button:focus-visible {
+  background: none;
+  color: rgb(0 0 0 / 1);
+}
+#filters-drawer .theme-drawer__close-button .svg-wrapper {
+  display: none;
+}
+#filters-drawer .theme-drawer__close-button::before {
+  content: '';
+  width: calc(var(--leading) / 2);
+  height: calc(var(--leading) / 2);
+  background: currentColor;
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10.5 10.5' stroke='black' fill='none'><polyline points='1,1 9.5,9.5'/><polyline points='1,9.5 9.5,1'/></svg>") center / contain no-repeat;
+}
+
+/* filters.liquid: the scrolling middle row is the prototype's nav, one accordion per filter, half a leading apart */
+#filters-drawer .facets__form-wrapper {
+  color: var(--color-foreground);
+}
+#filters-drawer .facets-drawer__filters {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--leading) / 2);
+  padding: calc(var(--leading) * 1.5) calc(var(--leading) / 2);
+}
+/* The active-filter pills have no counterpart in the prototype; the checked boxes carry that state */
+#filters-drawer .facets-remove {
+  display: none;
+}
+#filters-drawer .facets__filters-wrapper {
+  display: grid;
+  gap: calc(var(--leading) / 2);
+}
+#filters-drawer .facets__item,
+#filters-drawer .sorting-filter,
+#filters-drawer .sorting-filter accordion-custom {
+  display: block;
+}
+#filters-drawer :is(.facets__item, .sorting-filter)::before {
+  content: none;
+}
+#filters-drawer .facets__panel {
+  padding: 0;
+}
+/* A summary is one line of text with a text plus or minus at the right edge */
+#filters-drawer .facets__summary {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: calc(var(--leading) / 2);
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  opacity: 1;
+  cursor: pointer;
+}
+#filters-drawer .facets__summary::after {
+  content: '+';
+  margin-inline-start: auto;
+}
+#filters-drawer .facets__panel[open] > .facets__summary::after {
+  content: '–';
+}
+#filters-drawer .facets__summary .icon-caret {
+  display: none;
+}
+#filters-drawer .facets__summary:hover .facets__label,
+#filters-drawer .facets__summary:focus-visible .facets__label {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+#filters-drawer .facets__label {
+  margin: 0;
+}
+#filters-drawer .facets__status {
+  margin-inline-start: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* list-filter.liquid: the checkbox list is the prototype's two-column ul */
+#filters-drawer .facets__inputs {
+  gap: 0;
+  padding-block-end: 0;
+}
+#filters-drawer .facets__inputs-wrapper {
+  margin: 0;
+}
+#filters-drawer .facets__inputs-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--leading) / 2) var(--leading);
+  padding: var(--leading) 0 calc(var(--leading) * 1.5);
+  margin: 0;
+}
+#filters-drawer input:checked + label {
+  font-weight: inherit;
+}
+/* checkbox-styles.liquid: Horizon's box at the 13px of the prototype's native checkbox, centred on a 21px line */
+#filters-drawer .checkbox__label {
+  align-items: center;
+  min-width: 0;
+  line-height: var(--leading);
+}
+#filters-drawer .checkbox__label-text {
+  padding-inline-start: calc(var(--leading) / 4);
+  color: inherit;
+}
+
+/* price-filter.liquid: no counterpart in the prototype; the two fields become underline sets, two leading tall, like the newsletter field */
+#filters-drawer .price-facet {
+  padding: var(--leading) 0 calc(var(--leading) * 1.5);
+}
+#filters-drawer .price-facet .facets__inputs-wrapper {
+  margin: 0;
+}
+#filters-drawer .price-facet__inputs-wrapper {
+  padding: 0;
+  gap: var(--leading);
+}
+#filters-drawer .price-facet__field {
+  height: calc(var(--leading) * 2);
+  box-shadow: 0 1px 0 var(--box-shadow-color);
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 0.125);
+}
+#filters-drawer .price-facet__field:hover {
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+#filters-drawer .price-facet__field:focus-within {
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 1);
+}
+#filters-drawer .price-facet__input,
+#filters-drawer .price-facet__input:focus {
+  height: 100%;
+  padding: 0 0 0 var(--leading);
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  line-height: var(--leading);
+}
+#filters-drawer .price-facet__label {
+  top: 50%;
+  left: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  line-height: var(--leading);
+}
+#filters-drawer .price-facet__separator {
+  font-size: inherit;
+}
+#filters-drawer .price-facet__highest-price {
+  padding: calc(var(--leading) / 2) 0 0;
+}
+
+/* sorting.liquid: stock hides sorting in the drawer from 750px up and swaps in a select below it;
+   the prototype has one Sort accordion everywhere, its options a two-column radio list */
+#filters-drawer .sorting-filter {
+  z-index: auto;
+}
+#filters-drawer .sorting-filter__container {
+  display: none;
+}
+#filters-drawer .sorting-filter .facets__panel {
+  display: block !important; /* .mobile\:hidden is !important below 750px */
+}
+/* Stock prints the current sort next to the label on phones; the checked radio carries that state */
+#filters-drawer .sorting-filter .facets__status {
+  display: none;
+}
+#filters-drawer .sorting-filter__options {
+  position: static;
+  width: auto;
+  min-width: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  overflow: clip;
+}
+/* The top padding only exists while open: a padded item still props the collapsed 0fr track open by its padding */
+#filters-drawer .sorting-filter__options-inner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--leading) / 2) var(--leading);
+  padding: 0;
+  transition: padding-block-start var(--animation-speed-slow) var(--animation-easing);
+}
+#filters-drawer details[open] .sorting-filter__options-inner {
+  padding-block-start: var(--leading);
+}
+#filters-drawer .sorting-filter__option {
+  grid-template-columns: auto 1fr;
+  gap: calc(var(--leading) / 4);
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  line-height: var(--leading);
+}
+#filters-drawer .sorting-filter__option:hover,
+#filters-drawer .sorting-filter__option:focus {
+  border-radius: 0;
+  background: none;
+}
+#filters-drawer .sorting-filter__input {
+  display: inline-block;
+  margin: 0;
+}
+#filters-drawer .sorting-filter__checkmark {
+  display: none;
+}
+#filters-drawer .sorting-filter__input:checked + .sorting-filter__checkmark + .sorting-filter__label {
+  font-weight: inherit;
+}
+/* Like the prototype's last details, the last panel has no bottom padding; the nav's own padding closes the card */
+#filters-drawer .facets-drawer__filters > :last-child > :last-child :is(.facets__inputs-list, .price-facet) {
+  padding-block-end: 0;
+}
+
+/* The footer is the prototype's Reset and Submit pair; stock hides "See items" on desktop and "Clear all" until a filter is active */
+#filters-drawer .facets__drawer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--leading) / 2);
+  padding: calc(var(--leading) / 2);
+  background: none;
+}
+#filters-drawer .facets__drawer-actions > facet-remove-component {
+  display: grid;
+}
+#filters-drawer .facets__clear-all,
+#filters-drawer .facets__see-results {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: calc(var(--leading) / 4) calc(var(--leading) * 0.75);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: var(--leading);
+  text-transform: none;
+  transform: none;
+  opacity: 1;
+  cursor: pointer;
+}
+#filters-drawer .facets__clear-all {
+  background: rgb(0 0 0 / 0.03125);
+  color: rgb(0 0 0 / 1);
+}
+#filters-drawer .facets__clear-all:hover,
+#filters-drawer .facets__clear-all:focus-visible {
+  background: rgb(0 0 0 / 0.0625);
+}
+#filters-drawer .facets__see-results {
+  background: rgb(0 0 0 / 0.875);
+  color: rgb(255 255 255 / 1);
+}
+#filters-drawer .facets__see-results:hover,
+#filters-drawer .facets__see-results:focus-visible {
+  background: rgb(0 0 0 / 1);
+}
+
+/* From 990px the drawer opens non-modally and stock pushes the page aside; the card floats over the page
+   instead, above the backdrop div that backdrop.html renders */
+@media screen and (min-width: 990px) {
+  body:has(#filters-drawer[open]) .page-wrapper {
+    margin-right: 0;
+  }
+  body:has(#filters-drawer[open]) shopify-account::part(dialog) {
+    translate: none;
+  }
+  #filters-drawer .theme-drawer__dialog {
+    z-index: calc(var(--layer-temporary) + var(--drawer-stack-order, 0));
+  }
+  body:has(#filters-drawer[open]) #filters-backdrop {
+    display: block;
+  }
+}
+
+/* Footer */
+@scope (html:not(:has([id*="shopify"]))) {
+  body > footer {
+    padding-inline: calc(var(--leading) * 0.5);
+    padding-block: calc(var(--leading) * 1);
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--leading) * 2) 0;
+    align-items: start;
+    display: grid;
+  }
+
+  body > footer form {
+    padding: 0 calc(var(--leading) * 0.5);
+    grid-column: 1 / -1;
+  }
+  body > footer p {
+    margin: 0 0 calc(var(--leading) * 0.5) 0;
+  }
+  body > footer i {
+    margin: 0 0 calc(var(--leading) * 1) 0;
+    display: block;
+  }
+  body > footer fieldset {
+    border-bottom: 1px solid rgb(var(--dark) / 0.125);
+    border-top: 1px solid transparent;
+    grid-template-columns: 1fr auto;
+    border-right: none;
+    border-left: none;
+    display: grid;
+    padding: 0;
+    margin: 0;
+  }
+  body > footer fieldset:hover {
+    border-bottom: 1px solid rgb(var(--dark) / 0.25);
+  }
+  body > footer fieldset:focus-within {
+    border-bottom: 1px solid rgb(var(--dark) / 1);
+  }
+  body > footer input {
+    padding: calc(var(--leading) * 0.25 - 1px) 0;
+    color: rgb(var(--dark) / 1);
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    background: none;
+    appearance: none;
+    font-size: 16px;
+    outline: none;
+    border: none;
+  }
+  body > footer input::placeholder {
+    font-size: 1rem;
+  }
+  /* The submit is the arrow, text on the line rather than the primary */
+  body > footer button {
+    padding: calc(var(--leading) * 0.25 - 1px) 0;
+    color: rgb(var(--dark) / 0.875);
+    text-align: right;
+    background: none;
+  }
+  body > footer button:hover {
+    color: rgb(var(--dark) / 1);
+  }
+
+  body > footer nav {
+    padding: 0 calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 1);
+    display: grid;
+  }
+  body > footer ul {
+    gap: calc(var(--leading) * 0.5);
+    list-style: none;
+    display: grid;
+    padding: 0;
+    margin: 0;
+  }
+
+  body > footer small {
+    padding: 0 calc(var(--leading) * 0.5);
+    grid-template-columns: 1fr auto;
+    grid-column: 1 / -1;
+    font-size: inherit;
+    opacity: 0.375;
+    display: grid;
+  }
+
+  @media(min-width: 768px) {
+    body > footer {
+      padding-inline: calc(var(--leading) * 1.5);
+      grid-template-columns: repeat(24, 1fr);
+      gap: calc(var(--leading) * 3) 0;
+    }
+    body > footer form {
+      padding: 0 calc(var(--leading) * 1.5);
+      grid-column: 16 / span 9;
+    }
+    body > footer p {
+      margin: 0 0 calc(var(--leading) * 1) 0;
+    }
+    body > footer i {
+      margin: 0 0 calc(var(--leading) * 1.75) 0;
+    }
+    body > footer nav {
+      padding: 0 calc(var(--leading) * 1.5);
+      grid-column: span 4;
+      order: -1;
+    }
+    body > footer small {
+      padding: 0 calc(var(--leading) * 1.5);
+    }
+  }
+}
+
+/* menu.liquid */
+summary.menu__heading {
+  padding-block: 0;
+}
+.menu__item + .menu__item {
+  margin-block-start: calc(var(--leading) * 0.5);
+}
+.menu__item a:hover,
+.menu__item a:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+
+/* email-signup.liquid */
+.email-signup__heading {
+  padding-block: 0 var(--leading);
+}
+.email-signup__button--arrow .email-signup__button-icon {
+  display: none;
+}
+.email-signup__button--arrow::before {
+  content: '→';
+  line-height: 1;
+}
+/* In the underline field set, the arrow sits flush with the field's right edge */
+.email-signup__input--underline + button.email-signup__button--integrated.email-signup__button--arrow {
+  justify-content: flex-end;
+}
+/* The underline set is exactly 2 leading tall, its underline on the baseline */
+.email-signup__input-group--underline {
+  height: calc(var(--leading) * 2);
+  margin-block-end: 0;
+  box-shadow: 0 1px 0 var(--box-shadow-color);
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 0.125);
+}
+.email-signup__input-group--underline:hover {
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+.email-signup__input-group--underline:focus-within {
+  --box-shadow-color: rgb(var(--color-foreground-rgb) / 1);
+}
+
+/* CodePen */
+@scope (html:not(:has([id*="shopify"]))) {
+  /* max-content, not auto: next to the 1fr track an auto track sizes to the button's min-width
+     (1.5 leading from buttons.css), which is narrower than most labels */
+  header:has(a[href="/"]) {
+    grid-template-columns: repeat(3, max-content) 1fr repeat(3, max-content);
+    padding: calc(var(--leading) * 1);
+    gap: calc(var(--leading) * 1);
+    align-items: center;
+    text-align: center;
+    position: sticky;
+    display: grid;
+    z-index: 1;
+    top: 0;
+  }
+  @media(min-width: 768px) {
+    header:has(a[href="/"]) {
+      padding-inline: calc(var(--leading) * 3);
+    }
+  }
+}
+
+/* header.liquid */
+.header-section:has(> #header-component[sticky='always']),
+.header-section:has(> #header-component[sticky='scroll-up'][data-sticky-state='active']) {
+  top: 0 !important;
+}
+@media screen and (max-width: 749px) {
+  /* #header-component prefix outranks the stock mobile .header__columns rule */
+  #header-component .header__row .header__columns {
+    --header-mobile-bookend: calc(var(--leading) * 2);
+    padding-block: calc(var(--leading) * 0.25);
+    padding-inline: calc(var(--leading) * 0.25);
+  }
+}
+
+/* header-actions.liquid */
+shopify-account::part(signed-out-avatar) {
+  min-width: calc(var(--leading) * 2);
+  min-height: calc(var(--leading) * 2);
+  height: calc(var(--leading) * 2);
+}
+.header-actions--text .header-actions__text-style {
+  font-size: 13px;
+}
+.header-actions__action:hover .header-actions__cart-icon--text > .mobile\:hidden,
+.header-actions__action:focus-visible .header-actions__cart-icon--text > .mobile\:hidden,
+.header-actions__action:hover .account-button__text,
+.header-actions__action:focus-within .account-button__text {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+
+/* _header-logo.liquid */
+a.header-logo {
+  font-family: var(--font-body--family);
+  font-weight: var(--font-body--weight);
+  line-height: var(--leading);
+  font-size: 13px;
+}
+a.header-logo .header-logo__image-container {
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.125);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+a.header-logo:hover .header-logo__image-container,
+a.header-logo:focus .header-logo__image-container {
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+
+/* theme-styles-variables.liquid */
+:root {
+  /* Icons */
+  --icon-size-xs: calc(var(--leading) * 0.5);
+  --icon-size-sm: var(--leading);
+  --icon-size-md: var(--leading);
+}
+
+/* email-signup.liquid, slideshow-arrows.liquid */
+/* The text arrows (→ ←) render in the UA default serif regardless of the body font */
+.email-signup__button--arrow::before,
+.slideshow-control--style-arrow::before {
+  font-family: serif;
+}
+
+/* header-drawer.liquid */
+/* The hamburger is a 21×21 data URI: two 0.75-leading lines 9px apart centre to centre (8px between the strokes), centred; currentColor inside an image resolves to black */
+/* The .header-drawer prefix outranks the stock .header__icon--summary .header-drawer-icon size rule */
+.header-drawer .header__icon--summary .header-drawer-icon--open {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21' height='21' width='21' stroke='currentColor' fill='none'><polyline points='2.625,6 18.375,6'></polyline><polyline points='2.625,15 18.375,15'></polyline></svg>");
+  background-size: var(--icon-size-sm);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.header-drawer .header__icon--summary .header-drawer-icon--open svg {
+  display: none;
+}
+
+/* search.liquid */
+/* The header search icon is a 12px circle with a 4px stem as a data URI, its tangents on half-pixels, centred in the stock 2-leading wrapper */
+.search-action .header-actions__action .svg-wrapper {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21' height='21' width='21' stroke='currentColor' fill='none'><circle cx='10.5' cy='10.5' r='6'/><polyline points='14.5,14.5 18.5,18.5'></polyline></svg>");
+  background-size: var(--icon-size-sm);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.search-action .header-actions__action .svg-wrapper svg {
+  display: none;
+}
+
+/* header-actions.liquid */
+/* The cart icon is the body polyline plus a radius-3 bag-handle path as a data URI, centred in the stock 2-leading wrapper. Flex, not
+   inline-flex: emptied of its svg the wrapper would sit on the baseline and grow the cart-icon block */
+header-actions .header-actions__cart-icon .svg-wrapper {
+  display: flex;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21' height='21' width='21' stroke='currentColor' fill='none'><polyline points='3,3.5 18,3.5 18.5,17.5 2.5,17.5 3,3.5'></polyline><path d='M7.5 3.5a3 3 0 0 1 6 0'/></svg>");
+  background-size: var(--icon-size-sm);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+header-actions .header-actions__cart-icon .svg-wrapper svg {
+  display: none;
+}
+/* Where the icon shows, the count sits dead centre in the square as plain header text; the desktop
+   text header keeps cart.css's "Cart 2". The header-actions prefix outranks the stock bubble rules */
+@media screen and (max-width: 749px) {
+  header-actions .header-actions__cart-icon .cart-bubble {
+    inset: 0;
+    width: auto;
+    aspect-ratio: auto;
+    padding: 0;
+    border-radius: 0;
+    color: inherit;
+  }
+  /* cart-bubble.liquid */
+  header-actions .header-actions__cart-icon .cart-bubble__background {
+    display: none;
+  }
+  header-actions .header-actions__cart-icon .cart-bubble__text {
+    font-size: inherit;
+  }
+}
+
+/* header-drawer.liquid */
+/* The drawer close X as a data URI: an 8px X centred in the 1-leading icon. The button and icon
+   sizes live in menu.css; this only paints the glyph and hides the stock svg */
+.header-drawer .menu-drawer__close-button .svg-wrapper {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21' height='21' width='21' stroke='currentColor' fill='none'><polyline points='6.5,6.5 14.5,14.5'></polyline><polyline points='6.5,14.5 14.5,6.5'></polyline></svg>");
+  background-size: var(--icon-size-sm);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.header-drawer .menu-drawer__close-button .svg-wrapper svg {
+  display: none;
+}
+
+/* header-drawer.liquid */
+/* The drawer's menu list pads half a leading on all sides below the close button (one leading from the
+   screen edge with the drawer inset), no margin, and puts its links on a 1-leading line with a
+   half-leading gap. Four classes outrank both the
+   stock .menu-drawer__menu.has-submenu margin and menu.css's half-leading gap on the same list */
+.header-drawer .menu-drawer .menu-drawer__navigation > .menu-drawer__menu {
+  margin-block: 0;
+  padding: calc(var(--leading) / 2);
+  gap: calc(var(--leading) / 2);
+}
+.header-drawer .menu-drawer .menu-drawer__navigation > .menu-drawer__menu > li > .menu-drawer__menu-item {
+  line-height: var(--leading);
+}
+
+/* theme-drawer-header.liquid */
+/* The drawer close buttons (cart, filters, buy buttons) show no focus ring, like the menu close button as
+   used: the drawer script focuses this button on open, so any ring would flash on every open. The doubled
+   class outranks the stock single-class rule that draws a 2px ring, and the theme-wide :focus-visible outline */
+.theme-drawer__close-button.theme-drawer__close-button,
+.theme-drawer__close-button.theme-drawer__close-button:focus-visible {
+  outline: none;
+}
+
+/* base.css */
+/* iOS zooms into any focused field whose font is under 16px, so typed text is 16px in every text field
+   and textarea; only the placeholder drops to body size, as the prototype does with its 1rem placeholders.
+   Number inputs and selects stay at body size: they sit inline on 13px lines and are picked, not typed.
+   Compiled before the stock CSS, so the body prefix lifts these above stock's single-class input rules */
+body :is(input:is([type='text'], [type='email'], [type='search'], [type='tel'], [type='url'], [type='password']), input:not([type]), textarea) {
+  font-size: 16px;
+}
+body :is(input:is([type='text'], [type='email'], [type='search'], [type='tel'], [type='url'], [type='password']), input:not([type]), textarea)::placeholder {
+  font-size: var(--font-paragraph--size);
+}
+
+/* product-media-gallery-content-styles.liquid */
+@media screen and (min-width: 750px) {
+  /*
+    The rail layout only applies when 'Thumbnails' is picked as the desktop slideshow controls
+    style in the theme editor: that's the only case where the stock-hidden slideshow holds a
+    thumbnail rail worth un-hiding. `:not(.media-gallery__mobile-controls)` excludes
+    mobile-only thumbnails; any other desktop controls style keeps the stock grid untouched.
+  */
+  .product-information__media
+    media-gallery.media-gallery--grid:has(slideshow-controls[thumbnails]:not(.media-gallery__mobile-controls)) {
+    display: grid;
+    grid-template-columns: calc((100% - 4 * (var(--leading) * 2)) / 5) minmax(0, 1fr);
+    column-gap: calc(var(--leading) * 2);
+
+    /* Display grid view as a carousel on mobile, thumbnail rail + grid on desktop */
+    slideshow-component {
+      display: block;
+      height: 100%;
+    }
+    slideshow-container {
+      display: none;
+    }
+  }
+  .product-information__media .media-gallery--grid .media-gallery__grid .product-media-container {
+    /* Match the hard-set sticky offsets so a thumb-click scroll rests where the rail sticks */
+    scroll-margin-block-start: calc(var(--leading) * 2);
+  }
+}
+/* slideshow-controls.liquid */
+@media screen and (min-width: 750px) {
+  .product-information__media .media-gallery--grid {
+    --slideshow-thumbnails-padding-inline: 0px;
+  }
+  /* Hard-set the rail's sticky top to 2 leading: --header-height is JS-measured after load,
+     so a var-driven top jumps on load */
+  .product-information__media .media-gallery--grid {
+    --sticky-header-offset: calc(var(--leading) * 2);
+  }
+  .product-information__media .media-gallery--grid slideshow-controls[thumbnails] .slideshow-controls__thumbnails-container {
+    overflow: visible;
+  }
+  .product-information__media .media-gallery--grid slideshow-controls[thumbnails][pagination-position='left'] .slideshow-controls__thumbnails {
+    padding-block: 0;
+  }
+  .product-information__media .media-gallery--grid .slideshow-controls__thumbnails {
+    gap: var(--leading);
+  }
+  .product-information__media .media-gallery--grid .slideshow-controls__thumbnail {
+    width: 100%;
+  }
+  .product-information__media .media-gallery--grid .slideshow-controls__thumbnails .slideshow-control:is([aria-selected='true']) {
+    outline: none;
+    border: none;
+  }
+}
+.product-information__media .media-gallery--grid .slideshow-controls__thumbnail {
+  background-color: var(--color-badge-background);
+}
+/*
+  Only for the exact editor state Carousel + desktop pagination 'Thumbnails' positioned 'Left';
+  any other combination (grid, dots, counter, bottom/right, mobile-only thumbnails) renders
+  stock. Beige behind the thumbnails so they stay visible against the page background, and the
+  rail spans the first design-grid column (same formula as the grid-mode layout above) with the
+  carousel starting one gutter after it.
+*/
+@media screen and (min-width: 750px) {
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls))
+    slideshow-component {
+    grid-template-columns: calc((100% - 4 * (var(--leading) * 2)) / 5) minmax(0, 1fr);
+    column-gap: calc(var(--leading) * 2);
+  }
+  .product-information__media
+    .media-gallery--carousel
+    slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls) {
+    --slideshow-thumbnails-padding-inline: 0px;
+    --slideshow-thumbnails-padding-block: 0px;
+  }
+  /* Hard-set the rail's sticky top to 2 leading, like the grid-mode rule above:
+     --header-height is JS-measured after load, so a var-driven top jumps on load */
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls)) {
+    --sticky-header-offset: calc(var(--leading) * 2);
+  }
+  .product-information__media
+    .media-gallery--carousel
+    slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls)
+    .slideshow-controls__thumbnails {
+    gap: var(--leading);
+    width: 100%;
+    padding-block: 0;
+  }
+  .product-information__media
+    .media-gallery--carousel
+    slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls)
+    .slideshow-controls__thumbnail {
+    background-color: rgb(240, 238, 233);
+    width: 100%;
+  }
+  .product-information__media
+    .media-gallery--carousel
+    slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls)
+    .slideshow-controls__thumbnails
+    .slideshow-control:is([aria-selected='true']) {
+    outline: none;
+    border: none;
+  }
+  /* Stack the slides vertically with a leading gap instead of a horizontal carousel */
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls))
+    slideshow-container {
+    height: auto;
+    overflow: visible;
+  }
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls))
+    slideshow-slides {
+    flex-direction: column;
+    gap: var(--leading);
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls))
+    slideshow-slide {
+    width: 100%;
+    /* Match the hard-set sticky offsets so a thumb-click scroll rests where the rail sticks */
+    scroll-margin-block-start: calc(var(--leading) * 2);
+  }
+  .product-information__media
+    .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']:not(.media-gallery__mobile-controls))
+    slideshow-arrows {
+    display: none;
+  }
+}
+
+/* Menu */
+@scope (html:not(:has([id*="shopify"]))) {
+  #menu {
+    max-height: calc(100% - var(--leading) * 1);
+    max-width: calc(100% - var(--leading) * 1);
+    margin: calc(var(--leading) * 0.5);
+    width: calc(100vw / 8 * 2);
+    min-width: 360px;
+    height: 100%;
+    border: none;
+    padding: 0;
+  }
+  #menu:popover-open {
+    grid-template-rows: auto 1fr auto;
+    display: grid;
+  }
+
+  #menu nav {
+    padding: 0 calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 0.5);
+    align-content: start;
+    display: grid;
+  }
+  #menu details summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  #menu details summary:hover {
+    text-decoration: underline rgb(var(--dark) / 0.25);
+    text-underline-offset: 2px;
+  }
+  #menu details summary::after {
+    float: right;
+    content: '+';
+  }
+  #menu details[open] summary::after {
+    content: '–';
+  }
+  #menu ul {
+    padding: calc(var(--leading) * 1) 0 calc(var(--leading) * 1.5) 0;
+    gap: calc(var(--leading) * 0.5);
+    list-style: none;
+    display: grid;
+    margin: 0;
+  }
+
+  #menu footer {
+    padding: calc(var(--leading) * 0.5);
+    gap: calc(var(--leading) * 0.5);
+    display: grid;
+  }
+  #menu figure {
+    background: rgb(var(--light) / 1);
+    aspect-ratio: 3 / 2;
+    margin: 0;
+  }
+}
+
+/* theme-styles-variables.liquid */
+:root {
+  /* Menu font sizes */
+  --menu-font-sm--size: 13px;
+  --menu-font-sm--line-height: var(--leading);
+  --menu-font-2xl--size: 13px;
+  --menu-font-2xl--line-height: var(--leading);
+  /* Drawers */
+  --drawer-padding: var(--leading);
+}
+
+/* menu-font-styles.liquid */
+.menu-list__link {
+  --menu-top-level-font-size-desktop: var(--menu-font-sm--size);
+}
+
+/* _header-menu.liquid */
+.menu-list__link:hover .menu-list__link-title,
+.menu-list__link:focus-visible .menu-list__link-title {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+/* .header prefix outranks the stock single-class declaration of this variable */
+.header .header__drawer {
+  --header-drawer-min-height: calc(var(--leading) * 2);
+}
+
+/* header-drawer.liquid */
+/* Compiled before the stock drawer CSS in styles.css, so every override needs the
+   .header-drawer prefix to outrank the stock single-class selectors */
+.header-drawer .header__icon--summary {
+  width: calc(var(--leading) * 2);
+  height: calc(var(--leading) * 2);
+}
+.header-drawer .menu-drawer {
+  --drawer-padding: calc(var(--leading) / 2);
+  top: calc(var(--leading) / 2);
+  left: calc(var(--leading) / 2);
+  width: min(360px, 100vw - var(--leading));
+  height: calc(100dvh - var(--leading));
+  border-right: none;
+  background-color: rgb(var(--color-background-rgb) / 0.9375);
+  backdrop-filter: blur(var(--leading));
+}
+@media screen and (max-width: 749px) {
+  /* Half a leading from every edge at every mobile width: the four insets set the box and
+     the 360px cap and the stock 500px max-width are lifted so the size comes from them */
+  .header-drawer .menu-drawer {
+    inset: calc(var(--leading) / 2);
+    width: auto;
+    height: auto;
+    max-width: none;
+  }
+}
+.header-drawer .menu-drawer__backdrop {
+  background-color: rgb(var(--color-background-rgb) / 0.75);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+  background-blend-mode: multiply;
+  background-size: 100px 100px;
+  background-repeat: repeat;
+  backdrop-filter: blur(var(--leading));
+}
+/* 1.5 leading square in the panel's top-left corner */
+.header-drawer .menu-drawer__close-button {
+  width: calc(var(--leading) * 1.5);
+  height: calc(var(--leading) * 1.5);
+  padding: 0;
+  color: rgb(var(--color-foreground-rgb) / 0.875);
+}
+.header-drawer .menu-drawer__close-button:is(:hover, :focus-visible) {
+  color: rgb(var(--color-foreground-rgb) / 1);
+  opacity: 1;
+}
+.header-drawer .menu-drawer__close-button .svg-wrapper {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+.header-drawer .menu-drawer__menu {
+  display: grid;
+  gap: calc(var(--leading) / 2);
+}
+.header-drawer .menu-drawer__menu > .menu-drawer__list-item,
+.header-drawer .menu-drawer__menu-item--mainlist {
+  min-height: 0;
+}
+.header-drawer .menu-drawer__menu > .menu-drawer__list-item--flat {
+  margin-block-end: 0;
+}
+.header-drawer .menu-drawer__menu-item {
+  padding-block: 0;
+}
+.header-drawer .menu-drawer__menu-item:is(:hover, :focus-visible) .menu-drawer__menu-item-text {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+.header-drawer .menu-drawer__featured-content-list .resource-card__media {
+  background-color: rgb(240 238 233 / 1);
+}
+/* The strip's end cards sit half a leading in from the panel, like the rest of the padding */
+.header-drawer .menu-drawer__featured-content-list-item:first-child {
+  margin-inline-start: calc(var(--leading) / 2);
+}
+.header-drawer .menu-drawer__featured-content-list-item:last-child {
+  margin-inline-end: calc(var(--leading) / 2);
+}
+.menu-drawer__menu.has-submenu {
+  margin-block-end: calc(var(--leading) * 2);
+}
+.menu-drawer__menu--childlist:not(:has(.menu-drawer__animated-element)) {
+  margin-block-end: var(--leading);
+}
+.menu-drawer__list-item--deep:not(.menu-drawer__list-item--divider) .menu-drawer__menu {
+  margin-block-start: 0;
+}
+.menu-drawer__list-item--deep .menu-drawer__menu,
+.menu-drawer__menu--grandchildlist {
+  padding-inline: var(--drawer-padding);
+}
+.menu-drawer__list-item--deep .menu-drawer__menu {
+  padding-block-end: 0;
+}
+.menu-drawer__menu-item--mainlist > .svg-wrapper {
+  padding-block: 0;
+}
+
+/* 
+.email-signup__input-group .email-signup__input--underline {
+  padding: calc(var(--leading) * 0.5) 0;
+}
+.email-signup__input-group--underline {
+  margin-block-end: 0;
+} */
+
+/* main-collection.liquid, product-grid.liquid, section.liquid
+   The collection page is one grid, as the prototype's #collection: every wrapper between #MainContent
+   and the product cards is display: contents, so the cards and the sections after the collection are
+   siblings in the same grid and `order` can interleave them. A section after the collection sets
+   `div { order: 4; }` in its Custom CSS field to sit after that many products; unset, it stays below
+   them. The field refuses any selector naming the section (`.section` → "Section selector is not
+   supported") but allows tags, and `div` reaches the section box; its inner flex and grid levels are
+   pinned below so the rule moves only the section. Four cards a row on a 2-leading gutter, two on a
+   leading below 750px. Dense packing: a two-wide tile that can't finish a row drops to the next one,
+   and the card after it fills the cell it left */
+#MainContent[data-template='collection'] {
+  --collection-columns: 2;
+  --collection-gutter: var(--leading);
+  display: grid;
+  grid-template-columns: repeat(var(--collection-columns), minmax(0, 1fr));
+  grid-auto-flow: row dense;
+  gap: 0 var(--collection-gutter);
+  padding-inline: var(--page-margin);
+}
+@media screen and (min-width: 750px) {
+  #MainContent[data-template='collection'] {
+    --collection-columns: 4;
+    --collection-gutter: calc(var(--leading) * 2);
+  }
+}
+#MainContent[data-template='collection']
+  :is(
+    .shopify-section:has(> collection-component),
+    collection-component,
+    .product-grid-container,
+    .collection-wrapper,
+    .main-collection-grid,
+    .main-collection-grid > div,
+    .product-grid,
+    .shopify-section:has(> collection-component) ~ .section-wrapper
+  ) {
+  display: contents;
+}
+/* The hoisted sections' absolute backgrounds would resolve against #MainContent; the section paints its own */
+#MainContent[data-template='collection']
+  :is(.shopify-section:has(> collection-component), .shopify-section:has(> collection-component) ~ .section-wrapper)
+  > .section-background {
+  display: none;
+}
+/* Sections span the row and bleed past the page margin; their own page-width grid brings the content back to it */
+#MainContent[data-template='collection'] > .section-wrapper,
+#MainContent[data-template='collection'] .shopify-section:has(> collection-component) ~ .section-wrapper > .section {
+  grid-column: 1 / -1;
+  margin-inline: calc(-1 * var(--page-margin));
+}
+#MainContent[data-template='collection'] .shopify-section:has(> collection-component) ~ .section-wrapper > .section {
+  background-color: var(--color-background);
+  /* Stock's width: 100% would keep the section inside the margins it just bled past */
+  width: auto;
+}
+/* Below the products until the field says otherwise; :where() keeps it below the field's #shopify-section rule */
+:where(#MainContent[data-template='collection'] .shopify-section:has(> collection-component) ~ .section-wrapper > .section) {
+  order: 9999;
+}
+/* A section with a 4/5 image and no 16/9 is a portrait tile on desktop: two cards wide and two rows tall,
+   sat on the card columns instead of bleeding, its page-width grid collapsed to the content column. A 16/9
+   (or the 4/5 + 16/9 pair figures.css splits by breakpoint) stays full width, as does anything with no image */
+@media screen and (min-width: 750px) {
+  #MainContent[data-template='collection']
+    .shopify-section:has(> collection-component)
+    ~ .section-wrapper
+    > .section:has(.image-block[style*='--ratio: 4 / 5;']):not(:has(.image-block[style*='--ratio: 16 / 9;'])) {
+    grid-column: span 2;
+    grid-row: span 2;
+    grid-template-columns: 0 minmax(0, 1fr) 0;
+    /* The background row keeps its content height; the content row takes the rest of the two-row box */
+    grid-template-rows: auto minmax(0, 1fr);
+    margin-inline: 0;
+  }
+  /* The image gives up its ratio and fills the box above the caption, so the caption sits on the neighbouring
+     cards' title line and the tile ends with the row. The block contributes no height of its own: a tall
+     source would otherwise stretch the card rows it spans */
+  #MainContent[data-template='collection']
+    .shopify-section:has(> collection-component)
+    ~ .section-wrapper
+    > .section:has(.image-block[style*='--ratio: 4 / 5;']):not(:has(.image-block[style*='--ratio: 16 / 9;']))
+    .section-content-wrapper {
+    height: 100%;
+  }
+  #MainContent[data-template='collection']
+    .shopify-section:has(> collection-component)
+    ~ .section-wrapper
+    > .section:has(.image-block[style*='--ratio: 4 / 5;']):not(:has(.image-block[style*='--ratio: 16 / 9;']))
+    .section-content-wrapper
+    > .image-block {
+    flex: 1 1 0;
+    min-height: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  #MainContent[data-template='collection']
+    .shopify-section:has(> collection-component)
+    ~ .section-wrapper
+    > .section:has(.image-block[style*='--ratio: 4 / 5;']):not(:has(.image-block[style*='--ratio: 16 / 9;']))
+    .section-content-wrapper
+    > .image-block
+    > :is(.image-block__image, .placeholder-image) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+/* A section with no image is a card-sized tile on both breakpoints, as the prototype's overlay: one column,
+   one row, the page background colour for its text and link underlines. Its vertical position stays the
+   section's Position setting: Bottom puts a caption with the card's 42px bottom padding on the neighbouring
+   title line */
+#MainContent[data-template='collection']
+  .shopify-section:has(> collection-component)
+  ~ .section-wrapper
+  > .section:not(:has(.image-block)) {
+  grid-column: auto;
+  grid-template-columns: 0 minmax(0, 1fr) 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  margin-inline: 0;
+  color: var(--color-background);
+  --color-foreground: var(--color-background);
+  --color-foreground-rgb: var(--color-background-rgb);
+}
+/* The placeholder figures' noise-and-dark ground (figures.css) belongs to the content wrapper's content box, so
+   the section's block padding shows the page around it. The blurred gradient rides a ::before with the same
+   inset, clipped to itself; ::after stays grid.js's. The blocks are positioned to paint above it */
+#MainContent[data-template='collection']
+  .shopify-section:has(> collection-component)
+  ~ .section-wrapper
+  > .section:not(:has(.image-block))
+  .section-content-wrapper {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(rgb(0 0 0 / 0.84375), rgb(0 0 0 / 0.84375)), url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)'/></svg>") 0 0 / 200px 200px repeat #fff;
+  background-clip: content-box;
+}
+#MainContent[data-template='collection']
+  .shopify-section:has(> collection-component)
+  ~ .section-wrapper
+  > .section:not(:has(.image-block))
+  .section-content-wrapper::before {
+  pointer-events: none;
+  position: absolute;
+  content: '';
+  inset: var(--padding-block-start, 0px) 0 var(--padding-block-end, 0px);
+  background: linear-gradient(transparent, black);
+  filter: blur(175px);
+  clip-path: inset(0);
+}
+/* A leading of side inset on top of the blocks' own inline padding */
+#MainContent[data-template='collection']
+  .shopify-section:has(> collection-component)
+  ~ .section-wrapper
+  > .section:not(:has(.image-block))
+  .section-content-wrapper
+  > * {
+  position: relative;
+  padding-inline: calc(var(--leading) + var(--padding-inline-start, 0px)) calc(var(--leading) + var(--padding-inline-end, 0px));
+}
+/* The field's `div` rule reaches every div inside the section too; pin the section's grid children and the
+   content wrapper's blocks so they keep document order whatever the field says */
+#MainContent[data-template='collection']
+  .shopify-section:has(> collection-component)
+  ~ .section-wrapper
+  :is(.section > *, .section-content-wrapper > *) {
+  order: 0;
+}
+/* Cards take their index as order; a section with the same order follows the card, as ties keep document
+   order, so `order: 4` is after four cards. The first page is addressable */
+#MainContent[data-template='collection'] .product-grid__item {
+  order: var(--index, 25);
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(1) {
+  --index: 1;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(2) {
+  --index: 2;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(3) {
+  --index: 3;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(4) {
+  --index: 4;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(5) {
+  --index: 5;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(6) {
+  --index: 6;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(7) {
+  --index: 7;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(8) {
+  --index: 8;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(9) {
+  --index: 9;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(10) {
+  --index: 10;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(11) {
+  --index: 11;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(12) {
+  --index: 12;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(13) {
+  --index: 13;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(14) {
+  --index: 14;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(15) {
+  --index: 15;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(16) {
+  --index: 16;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(17) {
+  --index: 17;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(18) {
+  --index: 18;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(19) {
+  --index: 19;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(20) {
+  --index: 20;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(21) {
+  --index: 21;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(22) {
+  --index: 22;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(23) {
+  --index: 23;
+}
+#MainContent[data-template='collection'] .product-grid__item:nth-of-type(24) {
+  --index: 24;
+}
+/* The rest of the collection's own items span the row: the infinite-scroll sentinels, the empty state, pagination */
+#MainContent[data-template='collection']
+  :is([ref='viewMorePrevious'], [ref='viewMoreNext'], .pagination, .main-collection-grid__empty) {
+  grid-column: 1 / -1;
+}
+#MainContent[data-template='collection'] :is([ref='viewMoreNext'], .pagination) {
+  order: 99999;
+}
+/* filters.liquid
+   Stock overlaps the count and the toggle in one row of the collection wrapper; here they share a row
+   as its left and right halves instead, so neither needs the wrapper's row or the mobile pull-up */
+#MainContent[data-template='collection'] :is(.facets-block-wrapper--horizontal, .facets-toggle) {
+  grid-column: span 1;
+  grid-row: auto;
+  margin-block-start: 0;
+}
+@media screen and (min-width: 750px) {
+  #MainContent[data-template='collection'] :is(.facets-block-wrapper--horizontal, .facets-toggle) {
+    grid-column: span 2;
+  }
+}
+/* filters.css pads the mobile bar in from stock's full-bleed wrapper; the grid already holds it on the page margin */
+#MainContent[data-template='collection'] .facets--horizontal {
+  padding-inline: 0;
+}
+
+/* CodePen */
+@scope (html:not(:has([id*="shopify"]))) {
+  section.overlay {
+    container-type: inline-size;
+    position: relative;
+    display: grid;
+    margin: 0;
+  }
+  section.overlay figure {
+    aspect-ratio: 4 / 5;
+    grid-area: 1 / -1;
+    overflow: hidden;
+    display: grid;
+    z-index: 0;
+    margin: 0;
+  }
+  section.overlay figure :nth-child(1) {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noiseFilter'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23noiseFilter)'/></svg>");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    mix-blend-mode: multiply;
+    filter: grayscale(1);
+    grid-area: 1 / -1;
+    z-index: 0;
+  }
+  section.overlay figure :nth-child(2) {
+    background: rgba(0, 0, 0, 0.84375);
+    grid-area: 1/1;
+    z-index: 1;
+  }
+  section.overlay figure :nth-child(3) {
+    background: linear-gradient(transparent, black);
+    filter: blur(175px);
+    grid-area: 1/1;
+    z-index: 2;
+  }
+  section.overlay header {
+    padding: calc(var(--leading) * 1.5) calc(var(--leading) * 1);
+    place-content: end center;
+    text-align: center;
+    grid-area: 1 / -1;
+    display: grid;
+    color: white;
+    z-index: 1;
+  }
+  section.overlay header p {
+    margin: 0 0 calc(var(--leading) * 0.5) 0;
+  }
+  section.overlay header h1 {
+    margin: 0 0 calc(var(--leading) * 1.5) 0;
+  }
+  section.overlay header a {
+    text-decoration-color: rgba(255 255 255 / 0.25);
+  }
+  section.overlay header a:is(:hover, :focus) {
+    text-decoration-color: rgb(255 255 255 / 0.5);
+  }
+  section.overlay header a::after {
+    position: absolute;
+    content: '';
+    inset: 0;
+  }
+  @container (width > 750px) {
+    section.overlay figure {
+      aspect-ratio: 16 / 9;
+    }
+  }
+}
+
+.placeholder-image {
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)'/></svg>");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+.placeholder-image > svg {
+  visibility: hidden;
+}
+.placeholder-image::before,
+.placeholder-image::after {
+  pointer-events: none;
+  position: absolute;
+  content: '';
+  inset: 0;
+}
+.placeholder-image::before {
+  background: rgb(0 0 0 / 0.84375);
+  z-index: 1;
+}
+.placeholder-image::after {
+  background: linear-gradient(transparent, black);
+  filter: blur(175px);
+  z-index: 2;
+}
+
+/* A 4 / 5 image followed by a 16 / 9 image is an art-directed pair: portrait shows on mobile, landscape on desktop */
+@media screen and (max-width: 749px) {
+  .section-content-wrapper > .image-block[style*='--ratio: 4 / 5;'] + .image-block[style*='--ratio: 16 / 9;'] {
+    display: none;
+  }
+}
+@media screen and (min-width: 750px) {
+  .section-content-wrapper > .image-block[style*='--ratio: 4 / 5;']:has(+ .image-block[style*='--ratio: 16 / 9;']) {
+    display: none;
+  }
+}
+
+/* base.css */
+/* Set up page widths & margins */
+.page-width-wide,
+.page-width-normal,
+.page-width-narrow,
+.page-width-content {
+  --page-margin: calc(var(--leading) * 0.75);
+}
+@media screen and (min-width: 750px) {
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: calc(var(--leading) * 2);
+  }
+}
+
+/* product-information-content.liquid */
+/* Desktop only: the grid is a subgrid of the page grid, so below 750px a column-gap is paid
+   for by insetting the details track a leading each side off the page margin */
+@media screen and (min-width: 750px) {
+  .product-information__grid {
+    column-gap: calc(var(--leading) * 2);
+  }
+}
+@media screen and (min-width: 1200px) {
+  .product-information__grid:not(
+      .product-information__grid--half,
+      .product-information--media-none
+    ).product-information--media-left {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    .product-information__media {
+      grid-column: 1 / span 5;
+    }
+    .product-details {
+      grid-column: 6 / span 3;
+    }
+  }
+  .product-information__grid:not(
+      .product-information__grid--half,
+      .product-information--media-none
+    ).product-information--media-right {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    .product-information__media {
+      grid-column: 4 / span 5;
+    }
+    .product-details {
+      grid-column: 1 / span 3;
+    }
+  }
+}
+/*
+  Hard-set the sticky top to 2 leading: --header-height is JS-measured after load and stock
+  gates the offset on the JS-toggled [data-sticky-state], so a var-driven top jumps on load.
+  !important is needed to outrank that stock rule — its :has(#...) carries id-level specificity.
+*/
+.product-details.sticky-content--desktop {
+  --sticky-header-offset: calc(var(--leading) * 2) !important;
+}
+
+/* CodePen */
+@keyframes article {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100% * 5));
+  }
+}
+
+@scope (html:not(:has([id*="shopify"]))) {
+  article:has(nav) {
+    position: relative;
+  }
+
+  article:has(nav) a {
+    text-decoration: none;
+  }
+
+  article:has(nav) figure {
+    margin: 0 0 calc(var(--leading) * 0.5) 0;
+    timeline-scope: --article;
+    position: relative;
+  }
+  article:has(nav) figure::after {
+    bottom: calc(var(--leading) * 0 + 0.5px);
+    background: rgb(var(--dark) / 1);
+    animation: article linear both;
+    animation-timeline: --article;
+    transform-origin: left;
+    width: calc(100% / 6);
+    position: absolute;
+    content: '';
+    height: 1px;
+  }
+  @media (hover: hover) {
+    article:has(nav) figure::after {
+      width: calc(100% / 5);
+      opacity: 0;
+    }
+    article:has(nav) figure:hover::after {
+      opacity: 1;
+    }
+    @keyframes article {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(calc(100% * 4));
+      }
+    }
+  }
+  article:has(nav) figure ol {
+    scroll-timeline: --article inline;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overflow-x: scroll;
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+  article:has(nav) figure ol::-webkit-scrollbar {
+    display: none;
+  }
+  article:has(nav) figure li {
+    background: rgb(var(--light) / 1);
+    scroll-snap-align: center;
+    place-content: center;
+    aspect-ratio: 4 / 5;
+    flex-shrink: 0;
+    display: grid;
+    width: 100%;
+  }
+  @media (hover: hover) {
+    article:has(nav) figure li:first-of-type {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+    }
+    article:has(nav) figure li:not(:first-of-type) {
+      opacity: 0;
+    }
+    article:has(nav):hover figure li {
+      opacity: 1;
+    }
+  }
+
+  article:has(nav) > header {
+    grid-template-columns: 1fr auto;
+    display: grid;
+  }
+
+  article:has(nav) > menu {
+    margin: 0 0 calc(var(--leading) * 0.5) 0;
+    gap: calc(var(--leading) * 0.5);
+    list-style: none;
+    display: flex;
+    opacity: 0;
+    padding: 0;
+  }
+  article:has(nav):hover > menu {
+    opacity: 1;
+  }
+  article:has(nav) > menu button {
+    outline: none;
+  }
+
+  article:has(nav) > nav {
+    gap: calc(var(--leading) / 2 - 1px + 1px * 2);
+    display: flex;
+  }
+  article:has(nav) > nav a {
+    border: 1px solid rgb(var(--dark) / 0);
+    box-sizing: border-box;
+    padding: calc(1px * 2);
+    height: var(--leading);
+    width: var(--leading);
+    position: relative;
+    outline: none;
+  }
+  article:has(nav) > nav a[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.25;
+  }
+  article:has(nav) > nav a:before {
+    background: rgb(var(--light) / 1);
+    inset: calc(1px + 1px * 2);
+    position: absolute;
+    content: '';
+  }
+  article:has(nav) > nav a:is(:hover, :focus) {
+    border-color: rgb(var(--dark) / 0.125);
+  }
+  article:has(nav) > nav a:active {
+    border-color: rgb(var(--dark) / 0.25);
+  }
+  article:has(nav) > nav a.active{
+    border-color: rgb(var(--dark) / 1);
+  }
+
+  article:has(nav) > small {
+    left: calc(var(--leading) * 0.5);
+    top: calc(var(--leading) * 0.25);
+    font-size: inherit;
+    position: absolute;
+    opacity: 0.25;
+  }
+
+  article:has(nav) > button {
+    padding: calc(var(--leading) * 0.25) calc(var(--leading) * 0.125);
+    position: absolute;
+    color: inherit;
+    outline: none;
+    opacity: 0;
+    right: 0;
+    top: 0;
+  }
+  article:has(nav):hover > button {
+    opacity: 1;
+  }
+  article:has(nav) > button:hover svg {
+    fill: currentcolor;
+  }
+}
+
+/* product-card.liquid */
+.product-card .group-block:not(:has(product-price)) .group-block-content {
+  column-gap: calc(var(--leading) * 0.5);
+}
+.product-card .group-block:not(:has(product-price)) .group-block-content > :first-child {
+  opacity: calc(9 / 16);
+}
+@media (hover: hover) {
+  .product-card .group-block:not(:has(product-price)) {
+    opacity: 0;
+  }
+  .product-card:hover .group-block:not(:has(product-price)),
+  .product-card:focus-within .group-block:not(:has(product-price)) {
+    opacity: 1;
+  }
+}
+/* base.css */
+/* Stock gives row text blocks a 3.25em (42.25px) basis on mobile; the card's panel runs as a column there, so it becomes a height */
+@media screen and (max-width: 749px) {
+  .product-card .layout-panel-flex--row:not(.mobile-column) > .text-block {
+    flex-basis: calc(var(--leading) * 2);
+  }
+}
+/* product-media-container-styles.liquid */
+.product-media-container {
+  background-color: rgb(240, 238, 233);
+}
+@supports (animation-timeline: scroll()) {
+  @property --card-gallery-previous-visibility {
+    syntax: '*';
+    inherits: true;
+    initial-value: visible;
+  }
+  @property --card-gallery-next-visibility {
+    syntax: '*';
+    inherits: true;
+    initial-value: visible;
+  }
+  /* slideshow-styles.liquid */
+  .card-gallery slideshow-slides {
+    scroll-timeline-name: --card-gallery;
+    scroll-timeline-axis: inline;
+  }
+  /* card-gallery.liquid */
+  .card-gallery {
+    animation: card-gallery-bounds linear both;
+    animation-timeline: --card-gallery;
+    timeline-scope: --card-gallery;
+    --track: var(--slides);
+    --slides: 1;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2)) {
+    --slides: 2;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(3)) {
+    --slides: 3;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(4)) {
+    --slides: 4;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(5)) {
+    --slides: 5;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2))::after {
+    bottom: calc(var(--leading) * 0 + 0.5px);
+    animation: card-gallery linear both;
+    animation-timeline: --card-gallery;
+    width: calc(100% / var(--track));
+    background: var(--color-white);
+    mix-blend-mode: difference;
+    transform-origin: left;
+    position: absolute;
+    content: '';
+    height: 1px;
+    left: 0;
+  }
+  .card-gallery:has(slideshow-component[disabled='true'])::after {
+    display: none;
+  }
+  @keyframes card-gallery {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(100% * (var(--track) - 1)));
+    }
+  }
+  @keyframes card-gallery-bounds {
+    0% {
+      --card-gallery-previous-visibility: hidden;
+      --card-gallery-next-visibility: visible;
+    }
+    1%,
+    99% {
+      --card-gallery-previous-visibility: visible;
+      --card-gallery-next-visibility: visible;
+    }
+    100% {
+      --card-gallery-previous-visibility: visible;
+      --card-gallery-next-visibility: hidden;
+    }
+  }
+  /* slideshow-arrows.liquid */
+  .card-gallery .slideshow-control--previous {
+    visibility: var(--card-gallery-previous-visibility);
+  }
+  .card-gallery .slideshow-control--next {
+    visibility: var(--card-gallery-next-visibility);
+  }
+  @media (hover: hover) {
+    .card-gallery {
+      --track: calc(var(--slides) - 1);
+    }
+    .card-gallery:not(:has(slideshow-slide:not([hidden]):nth-of-type(3)))::after {
+      display: none;
+    }
+    .card-gallery::after {
+      opacity: 0;
+    }
+    .card-gallery:hover::after {
+      opacity: 1;
+    }
+  }
+}
+/* slideshow-styles.liquid */
+@media (hover: hover) {
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2)) slideshow-slides {
+    position: static;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2)) slideshow-slide:first-of-type {
+    position: absolute;
+    inset: 0;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2)) slideshow-slide:not(:first-of-type) {
+    opacity: 0;
+  }
+  .card-gallery:has(slideshow-slide:not([hidden]):nth-of-type(2)):hover slideshow-slide {
+    opacity: 1;
+  }
+}
+/* card-gallery.liquid */
+.product-card-gallery__title-placeholder {
+  background-color: rgb(240, 238, 233);
+}
+.card-gallery__placeholder svg {
+  visibility: hidden;
+}
+.product-card-gallery__title-placeholder {
+  /* Stock rounds the media container up to a whole pixel; the placeholder must match or mixed rows stretch it off the grid */
+  width: round(up, 100%, 1px);
+  position: relative;
+}
+.product-card-gallery__title-placeholder a {
+  position: absolute;
+  display: block;
+  inset: 0;
+}
+.product-card-gallery__title-placeholder .title-text {
+  clip-path: inset(50%);
+  white-space: nowrap;
+  position: absolute;
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+}
+/* slideshow-arrows.liquid */
+.slideshow-control--style-arrow {
+  font-size: 13px;
+  line-height: var(--leading);
+}
+.slideshow-control--style-arrow .svg-wrapper {
+  display: none;
+}
+/* The stock flip-x mirror would flip the ← glyph; distinct glyphs need no mirroring */
+.slideshow-control--style-arrow.slideshow-control--previous {
+  scale: none;
+}
+.slideshow-control--style-arrow.slideshow-control--previous::before {
+  content: '←';
+}
+.slideshow-control--style-arrow.slideshow-control--next::before {
+  content: '→';
+}
+/* resource-list-styles.liquid */
+/* Stock caps the mobile grid gap at 12px; the mobile grid guides run a 1-leading gutter.
+   The stock rule compiles later in the bundle, so the element qualifier is what wins. */
+@media screen and (max-width: 749px) {
+  div.resource-list {
+    --resource-list-mobile-gap-max: var(--leading);
+  }
+}
+@container resource-list (max-width: 749px) {
+  div.resource-list {
+    --resource-list-mobile-gap-max: var(--leading);
+  }
+}
+
+/* CodePen */
+@scope (html:not(:has([id*="shopify"]))) {
+  #search {
+    width: calc(100vw - var(--leading) * 1);
+    padding: 0 calc(var(--leading) * 0.5);
+    margin: calc(var(--leading) * 0.5);
+    border: none;
+  }
+  @media(min-width: 768px) {
+    #search {
+      width: calc(100vw / 8 * 5);
+      margin-inline: auto;
+    }
+  }
+
+  #search header {
+    border-bottom: 1px solid rgb(0 0 0 / 0.125);
+    grid-template-columns: auto 1fr auto;
+    border-top: 1px solid transparent;
+    display: grid;
+  }
+  #search header:hover {
+    border-bottom: 1px solid rgb(0 0 0 / 0.25);
+  }
+  #search header:focus-within {
+    border-bottom: 1px solid rgb(0 0 0 / 1);
+  }
+  #search header form {
+    display: contents;
+  }
+  /* The submit is the magnifier, text on the line rather than the primary */
+  #search header button {
+    padding: calc(var(--leading) * 0.25 - 2px) calc(var(--leading) * 0.5);
+    color: rgb(var(--dark) / 0.875);
+    background: none;
+  }
+  #search header button:hover {
+    color: rgb(var(--dark) / 1);
+  }
+  #search header input[type="search"] {
+    padding: calc(21px * 0.25 - 1px) 0;
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    appearance: none;
+    background: none;
+    font-size: 16px;
+    outline: none;
+    border: none;
+  }
+  #search header input[type="search"]::placeholder {
+    color: rgb(0 0 0 / 0.375);
+    font-size: 1rem;
+  }
+  #search header input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+  #search header button[type="submit"] {
+    margin-left: calc(var(--leading) * -0.5);
+    order: -1;
+  }
+  #search header button[popovertarget="search"] {
+    margin-right: calc(var(--leading) * -0.5);
+  }
+
+  #search menu {
+    padding: 0 0 calc(21px * 1) 0;
+    gap: calc(21px * 0.5);
+    list-style: none;
+    display: grid;
+    margin: 0;
+  }
+  #search menu button:hover {
+    text-decoration: underline rgb(var(--dark) / 0.25);
+    text-underline-offset: 2px;
+  }
+
+  #search output {
+    gap: calc(21px * 0);
+    display: grid;
+  }
+  #search output ol {
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 0 calc(21px * 1) 0;
+    gap: calc(21px * 0.5);
+    list-style: none;
+    display: grid;
+    padding: 0;
+  }
+  #search output figure {
+    margin: 0 0 calc(21px * 0.5) 0;
+    background: rgb(240 238 233);
+    aspect-ratio: 4 / 5;
+  }
+  #search output a {
+    text-decoration-color: rgb(0 0 0 / 0);
+    text-underline-offset: 2px;
+    color: inherit;
+  }
+  #search output a:hover {
+    text-decoration-color: rgb(0 0 0 / 0.25);
+  }
+  @media(width < 768px) {
+    #search output li:nth-child(n+4) {
+      display: none;
+    }
+  }
+  @media(min-width: 768px) {
+    #search output ol {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  #results {
+    width: calc(100vw - var(--leading) * 1);
+    padding: 0 calc(var(--leading) * 0.5);
+    margin: calc(var(--leading) * 0.5);
+    border: none;
+  }
+  @media(min-width: 768px) {
+    #results {
+      width: calc(100vw / 8 * 5);
+      margin-inline: auto;
+    }
+  }
+
+  #results header {
+    border-bottom: 1px solid rgb(0 0 0 / 0.125);
+    grid-template-columns: auto 1fr auto;
+    border-top: 1px solid transparent;
+    display: grid;
+  }
+  #results header:hover {
+    border-bottom: 1px solid rgb(0 0 0 / 0.25);
+  }
+  #results header:focus-within {
+    border-bottom: 1px solid rgb(0 0 0 / 1);
+  }
+  #results header form {
+    display: contents;
+  }
+  /* The submit is the magnifier, text on the line rather than the primary */
+  #results header button {
+    padding: calc(var(--leading) * 0.25 - 2px) calc(var(--leading) * 0.5);
+    color: rgb(var(--dark) / 0.875);
+    background: none;
+  }
+  #results header button:hover {
+    color: rgb(var(--dark) / 1);
+  }
+  #results header input[type="search"] {
+    padding: calc(21px * 0.25 - 1px) 0;
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    appearance: none;
+    background: none;
+    font-size: 16px;
+    outline: none;
+    border: none;
+  }
+  #results header input[type="search"]::placeholder {
+    color: rgb(0 0 0 / 0.375);
+    font-size: 1rem;
+  }
+  #results header input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+  #results header button[type="submit"] {
+    margin-left: calc(var(--leading) * -0.5);
+    order: -1;
+  }
+  #results header button[popovertarget="results"] {
+    margin-right: calc(var(--leading) * -0.5);
+  }
+
+  #results menu {
+    padding: 0 0 calc(21px * 1) 0;
+    gap: calc(21px * 0.5);
+    list-style: none;
+    display: grid;
+    margin: 0;
+  }
+  #results menu button:hover {
+    text-decoration: underline rgb(var(--dark) / 0.25);
+    text-underline-offset: 2px;
+  }
+  #results menu button:has(mark) {
+    color: rgb(var(--dark) / 0.375);
+  }
+  #results menu mark {
+    background: transparent;
+    color: rgb(0 0 0 / 1);
+  }
+
+  #results output {
+    gap: calc(21px * 0);
+    display: grid;
+  }
+  #results output ol {
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 0 calc(21px * 1) 0;
+    gap: calc(21px * 0.5);
+    list-style: none;
+    display: grid;
+    padding: 0;
+  }
+  #results output figure {
+    margin: 0 0 calc(21px * 0.5) 0;
+    background: rgb(240 238 233);
+    aspect-ratio: 4 / 5;
+  }
+  #results output article:has(mark) {
+    color: rgb(0 0 0 / 0.375);
+  }
+  #results output mark {
+    background: transparent;
+    color: rgb(0 0 0 / 1);
+  }
+  #results output a {
+    text-decoration-color: rgb(0 0 0 / 0);
+    text-underline-offset: 2px;
+    color: inherit;
+  }
+  #results output a:hover {
+    text-decoration-color: rgb(0 0 0 / 0.25);
+  }
+  @media(width < 768px) {
+    #results output li:nth-child(n+4) {
+      display: none;
+    }
+  }
+  @media(min-width: 768px) {
+    #results output ol {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  #results footer {
+    margin: calc(21px * 1) 0 calc(21px * 0.25) 0;
+    grid-template-columns: 1fr auto;
+    display: grid;
+  }
+  #results footer a {
+    text-decoration-color: rgb(0 0 0 / 0.125);
+    text-underline-offset: 2px;
+    color: inherit;
+  }
+  #results footer a:hover {
+    text-decoration-color: rgb(0 0 0 / 0.25);
+  }
+}
+
+/* Compiled before the stock search CSS in styles.css, so every override carries the
+   #search-modal id to outrank the stock class selectors */
+
+/* search-modal.liquid + dialog-styles.liquid */
+/* The dialog is the prototype's #search popover: pinned half a leading from the top, 62.5vw wide,
+   no chrome, translucent white with the same blur as the cart and menu drawers, no slide-in */
+#search-modal .search-modal__content {
+  width: 62.5vw;
+  /* The UA sets dialogs to fit-content; auto would make a fixed box with both block insets fill the viewport */
+  height: fit-content;
+  max-width: none;
+  max-height: calc(100dvh - var(--leading));
+  margin: calc(var(--leading) / 2) auto auto;
+  padding: 0 calc(var(--leading) / 2);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: rgb(255 255 255 / 0.9375);
+  backdrop-filter: blur(var(--leading));
+  animation: none;
+}
+@media screen and (max-width: 767px) {
+  #search-modal .search-modal__content {
+    width: calc(100vw - var(--leading));
+  }
+}
+/* Stock hides the backdrop below 750px and animates its brightness; the noise-and-blur wash from
+   menu.css replaces both. dialog.js awaits getAnimations() before closing, so animation: none is safe */
+#search-modal .search-modal__content::backdrop {
+  display: block;
+  animation: none;
+  transition: none;
+  background-color: rgb(255 255 255 / 0.75);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+  background-blend-mode: multiply;
+  background-size: 100px 100px;
+  background-repeat: repeat;
+  backdrop-filter: blur(var(--leading));
+}
+/* Every stock layer paints an opaque background; the dialog's translucent fill is the only one */
+#search-modal predictive-search-component,
+#search-modal .predictive-search-form__header,
+#search-modal .predictive-search-form__header-inner,
+#search-modal .predictive-search-form__content {
+  background: none;
+}
+
+/* Header row: 1.5 leadings tall with a hairline underneath that darkens on hover and turns black on focus */
+#search-modal .predictive-search-form__header {
+  height: calc(var(--leading) * 1.5);
+  padding: 0;
+  gap: 0;
+  border: none;
+  border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.125);
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
+}
+#search-modal .predictive-search-form__header:hover {
+  border-bottom-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+/* Stock forces border-color to var(--color-border) with !important while focused, so the focus
+   colour goes in through the variable rather than the property */
+#search-modal .predictive-search-form__header:focus-within {
+  --color-border: rgb(var(--color-foreground-rgb) / 1);
+}
+/* The vertical divider stock draws beside the Clear button */
+#search-modal .predictive-search-form__header::before {
+  content: none;
+}
+#search-modal .predictive-search-form__header-inner {
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+/* Font sizes come from inputs.css: 16px typed, body-size placeholder */
+#search-modal input.search-input {
+  height: var(--leading);
+  padding: 0 0 0 var(--leading);
+  border-radius: 0;
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+}
+#search-modal input.search-input::placeholder {
+  color: rgb(var(--color-foreground-rgb) / 0.375);
+}
+#search-modal input.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Search glyph: the prototype's 10.5px circle at the left edge, drawn with a mask like the cart drawer's close cross */
+#search-modal .predictive-search__icon {
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  width: calc(var(--leading) / 2);
+  height: calc(var(--leading) / 2);
+  color: rgb(var(--color-foreground-rgb) / 0.875);
+}
+#search-modal .predictive-search__icon svg {
+  display: none;
+}
+#search-modal .predictive-search__icon::before {
+  content: '';
+  width: calc(var(--leading) / 2);
+  height: calc(var(--leading) / 2);
+  background: currentColor;
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10.5 10.5' stroke='black' fill='none'><circle r='4.25' cx='5.25' cy='5.25'/><polyline points='9.5,9.5 8.5,8.5'/></svg>") center / contain no-repeat;
+}
+/* Clear stays, as plain text on the leading */
+#search-modal .predictive-search__reset-button {
+  min-width: 0;
+  height: auto;
+  align-self: stretch;
+  margin: 0;
+  padding: 0 calc(var(--leading) / 2);
+  opacity: 1;
+  color: rgb(var(--color-foreground-rgb) / 0.875);
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+  transform: none;
+}
+#search-modal .predictive-search__reset-button:is(:hover, :focus-visible) {
+  color: rgb(var(--color-foreground-rgb) / 1);
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+#search-modal .predictive-search__reset-button[hidden] {
+  opacity: 0;
+}
+/* Close cross flush with the right edge, same mask as the cart drawer */
+#search-modal .predictive-search__close-modal-button {
+  flex: none;
+  width: calc(var(--leading) * 1.5);
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
+  place-content: center;
+  margin: 0 calc(var(--leading) / -2) 0 0;
+  padding: 0 calc(var(--leading) / 2);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: rgb(var(--color-foreground-rgb) / 0.875);
+  transform: none;
+}
+#search-modal .predictive-search__close-modal-button:is(:hover, :focus-visible) {
+  background: none;
+  color: rgb(var(--color-foreground-rgb) / 1);
+}
+#search-modal .predictive-search__close-modal-button .svg-wrapper {
+  display: none;
+}
+#search-modal .predictive-search__close-modal-button::before {
+  content: '';
+  width: calc(var(--leading) / 2);
+  height: calc(var(--leading) / 2);
+  background: currentColor;
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10.5 10.5' stroke='black' fill='none'><polyline points='1,1 9.5,9.5'/><polyline points='1,9.5 9.5,1'/></svg>") center / contain no-repeat;
+}
+
+/* Content sizes to what it holds and scrolls inside the viewport; the dialog's own side padding is the only inset */
+#search-modal .predictive-search-form__content-wrapper {
+  top: auto;
+  max-height: none;
+  border-radius: 0;
+  transform: none;
+  transition: none;
+}
+#search-modal .predictive-search-form__content {
+  max-height: calc(100dvh - var(--leading) * 2.5);
+  padding: 0;
+}
+
+/* predictive-search-styles.liquid */
+#search-modal .predictive-search-results__inner,
+#search-modal .predictive-search-results__products {
+  padding: 0;
+}
+/* predictive-search.js prepends the recently viewed block above the collection; order puts it below */
+#search-modal .predictive-search-results__products {
+  display: flex;
+  flex-direction: column;
+}
+#search-modal .recently-viewed-wrapper {
+  order: 1;
+}
+/* Fewer than four recently viewed products: hide the block rather than show a short row */
+#search-modal .recently-viewed-wrapper:not(:has(.predictive-search-results__card:nth-child(4))) {
+  display: none;
+}
+/* Section titles sit on the leading with a leading above and below, like the prototype's Popular and Trending */
+#search-modal .predictive-search-results__title {
+  margin: var(--leading) 0;
+  font-size: var(--font-paragraph--size);
+  font-weight: normal;
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+  text-transform: none;
+}
+#search-modal .predictive-search-results__clear.button-unstyled {
+  margin: 0;
+  opacity: 1;
+  color: rgb(var(--color-foreground-rgb) / 0.875);
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+}
+#search-modal .predictive-search-results__clear.button-unstyled:is(:hover, :focus-visible) {
+  color: rgb(var(--color-foreground-rgb) / 1);
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+/* Four columns on a half-leading gap with a leading below; stock's four-item lists fill it exactly.
+   Three columns below 768px with the fourth card hidden, as the prototype */
+#search-modal .predictive-search-results__list.predictive-search-results__wrapper-products {
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--leading) / 2);
+  padding: 0 0 var(--leading);
+  animation: none;
+}
+@media screen and (max-width: 767px) {
+  #search-modal .predictive-search-results__list.predictive-search-results__wrapper-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  #search-modal .predictive-search-results__wrapper-products .predictive-search-results__card:nth-child(n + 4) {
+    display: none;
+  }
+}
+/* Cards are the prototype's <article>: figure and title, nothing else. No hover box, no press scale, no entry stagger */
+#search-modal .predictive-search-results__card {
+  animation: none;
+  transition: none;
+  transform: none;
+}
+#search-modal .predictive-search-results__card--product:is(:hover, :active, :focus-visible, [aria-selected='true'].keyboard-focus, :has(.resource-card:focus-visible)) {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  outline: none;
+  transform: none;
+}
+#search-modal .predictive-search-results__card--product:is(:hover, :focus-within) .resource-card__title {
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  text-underline-offset: 2px;
+}
+
+/* resource-card.liquid */
+#search-modal .resource-card {
+  row-gap: calc(var(--leading) / 2);
+  opacity: 1;
+  animation: none;
+}
+#search-modal .resource-card__media {
+  background-color: rgb(240 238 233 / 1);
+}
+#search-modal .resource-card__image,
+#search-modal .resource-card__image--secondary,
+#search-modal .resource-card__image-placeholder {
+  border-radius: 0;
+}
+/* A product without an image keeps the figure but not the title text stock prints inside it */
+#search-modal .resource-card__image-placeholder {
+  visibility: hidden;
+}
+#search-modal .resource-card__content {
+  gap: 0;
+}
+#search-modal .resource-card__title {
+  line-height: var(--leading);
+}
+
+/* Results state */
+/* predictive-search.liquid */
+/* The section-rendered response only ever holds products on this store, so the state is the header with
+   Clear, one row of four cards and a footer row: the count on the left, View all on the right */
+#search-modal [data-search-results] .predictive-search-results__wrapper-products .predictive-search-results__card:nth-child(n + 5) {
+  display: none;
+}
+#search-modal .predictive-search-results__inner {
+  display: flex;
+  flex-direction: column;
+}
+/* Stock hides the count with a visually-hidden utility whose position is !important; it becomes the left
+   half of the footer row, italic like the prototype's "138 Results", a leading below the grid */
+#search-modal [data-search-results] > [role='status'] {
+  position: static !important;
+  order: 1;
+  width: auto;
+  height: auto;
+  margin: var(--leading) 0 0;
+  overflow: visible;
+  clip: auto;
+  font-style: italic;
+  line-height: var(--leading);
+}
+/* No matches: stock's no-results paragraph never renders here (it needs the query resource, which the
+   request doesn't ask for), so the status line carries "No results found" and View all has nothing to show */
+#search-modal .predictive-search-form__content-wrapper:not(:has(.predictive-search-results__card--product)) [data-search-results] > [role='status'] {
+  margin-block-end: var(--leading);
+}
+#search-modal .predictive-search-form__content-wrapper:not(:has(.predictive-search-results__card--product)) .predictive-search-form__footer {
+  display: none;
+}
+
+/* search-modal.liquid */
+/* The footer drops the gradient overlay and sits in flow, pulled up one leading onto the count's row */
+#search-modal .predictive-search-form__footer {
+  /* Relative, not static: the results box below it is positioned with a z-index and would otherwise
+     sit over the row and take the click */
+  position: relative;
+  z-index: var(--layer-raised);
+  margin: calc(var(--leading) * -1) 0 0;
+  padding: 0 0 var(--leading);
+  background: none;
+}
+/* Room for the footer row inside the viewport; stock pads the bottom for its overlay instead */
+#search-modal .predictive-search-form__content:has([data-search-results]) {
+  max-height: calc(100dvh - var(--leading) * 3.5);
+  padding-block-end: 0;
+}
+/* View all is a text link on the right with the site's underline */
+#search-modal .predictive-search__search-button {
+  display: block;
+  width: fit-content;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  color: var(--color-foreground);
+  font-size: var(--font-paragraph--size);
+  line-height: var(--leading);
+  letter-spacing: var(--letter-spacing--body-normal);
+  text-decoration-line: underline;
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.125);
+  text-underline-offset: 2px;
+  transform: none;
+  transition: text-decoration-color var(--animation-speed) var(--animation-easing);
+}
+#search-modal .predictive-search__search-button:is(:hover, :focus-visible, :active) {
+  background: none;
+  box-shadow: none;
+  color: var(--color-foreground);
+  text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+  transform: none;
+}
+
+/* theme-styles-variables.liquid */
+:root {
+  /* Spacing */
+  /* Stock scales editor padding to 70% below 990px, which pushes it off the leading grid */
+  --spacing-scale-md: 1;
+  --padding-2xs: calc(var(--leading) * 0.5);
+  --padding-xs: calc(var(--leading) * 0.5);
+  --padding-sm: calc(var(--leading) * 0.5);
+  --padding-lg: calc(var(--leading) * 0.5);
+
+  /* Max-width / Measure */
+  --max-width--body-normal: max(32.5em, calc(37.5vw - 2.75 * var(--leading)));
+}
+
+/* CodePen */
+/* Root rules sit outside the @scope block: inside one, Chrome reaches the scoping root only through
+   :scope and Safari applied neither form, so the root carries the same condition on its own selector */
+html:not(:has([id*="shopify"])) {
+  --light: 240 238 233;
+  --dark: 0 0 0;
+}
+
+@scope (html:not(:has([id*="shopify"]))) {
+  ::backdrop {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.25'/></svg>");
+    background-color: rgb(255 255 255 / 0.75);
+    background-blend-mode: multiply;
+    background-size: 100px 100px;
+    backdrop-filter: blur(21px);
+    background-repeat: repeat;
+  }
+
+  ::selection {
+    background: rgb(var(--light) / 1);
+  }
+
+  dialog {
+    background: rgb(255 255 255 / 0.9375);
+    backdrop-filter: blur(21px);
+  }
+
+  /* Swatches for colors.html: a data element whose value is the colour's rgb triplet, with its alpha */
+  dl data::before {
+    box-shadow: inset 0 0 0 1px rgb(var(--dark) / 0.125);
+    margin: 0 calc(var(--leading) * 0.5) 0 0;
+    width: calc(var(--leading) * 2);
+    height: var(--leading);
+    vertical-align: top;
+    display: inline-block;
+    content: '';
+  }
+  dl data[value="240 238 233"]::before {
+    background: rgb(var(--light) / 1);
+  }
+  dl data[value="0 0 0"]::before {
+    background: rgb(var(--dark) / 1);
+  }
+  dl data[value="0 0 0 / 0.03125"]::before {
+    background: rgb(var(--dark) / 0.03125);
+  }
+  dl data[value="0 0 0 / 0.0625"]::before {
+    background: rgb(var(--dark) / 0.0625);
+  }
+  dl data[value="0 0 0 / 0.125"]::before {
+    background: rgb(var(--dark) / 0.125);
+  }
+  dl data[value="0 0 0 / 0.25"]::before {
+    background: rgb(var(--dark) / 0.25);
+  }
+  dl data[value="0 0 0 / 0.375"]::before {
+    background: rgb(var(--dark) / 0.375);
+  }
+  dl data[value="0 0 0 / 0.785"]::before {
+    background: rgb(var(--dark) / 0.785);
+  }
+  dl data[value="0 0 0 / 0.84375"]::before {
+    background: rgb(var(--dark) / 0.84375);
+  }
+  dl data[value="0 0 0 / 0.875"]::before {
+    background: rgb(var(--dark) / 0.875);
+  }
+  dl data[value="255 255 255 / 0.25"]::before {
+    background: rgb(255 255 255 / 0.25);
+  }
+  dl data[value="255 255 255 / 0.5"]::before {
+    background: rgb(255 255 255 / 0.5);
+  }
+  dl data[value="255 255 255 / 0.75"]::before {
+    background: rgb(255 255 255 / 0.75);
+  }
+  dl data[value="255 255 255 / 0.9375"]::before {
+    background: rgb(255 255 255 / 0.9375);
+  }
+}
+
+/* CodePen */
+/* Root rules sit outside the @scope block: inside one, Chrome reaches the scoping root only through
+   :scope and Safari applied neither form, so the root carries the same condition on its own selector */
+html:not(:has([id*="shopify"])) {
+  --leading: 21px;
+  -webkit-font-smoothing: antialiased;
+  line-height: var(--leading);
+  letter-spacing: 0.125px;
+  font-size: 13px;
+}
+
+@scope (html:not(:has([id*="shopify"]))) {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  select {
+    color: inherit;
+  }
+
+  svg {
+    display: block;
+  }
+
+  h1 {
+    line-height: inherit;
+    font-weight: inherit;
+    font-size: 21px;
+  }
+
+  p {
+    margin: calc(var(--leading) * 1) 0;
+  }
+
+  a {
+    text-decoration-color: rgb(var(--dark) / 0);
+    text-underline-offset: 2px;
+    color: inherit;
+  }
+
+  a u {
+    text-decoration: none;
+  }
+
+  a:has(u) {
+    text-decoration-color: rgb(var(--dark) / 0.125);
+  }
+
+  a:hover {
+    text-decoration-color: rgb(var(--dark) / 0.25);
+  }
+
+  /* Page inline padding for the classless pages, one leading as on the mirror's phone layout */
+  body > main {
+    padding-inline: calc(var(--leading) * 1);
+  }
+}
+
+@font-face {
+  src: url('https://cdn.shopify.com/s/files/1/2400/1837/files/regular_6eb662da-1438-443b-af46-f3801380fe47.woff?v=1787119883');
+  font-family: regular;
+}
+::selection {
+  background: rgb(240 238 233 / 1);
+}
+:root {
+  --leading: 21px;
+  /* theme-styles-variables.liquid */
+  /* Font families */
+  --font-body--family: regular;
+  --font-subheading--family: regular;
+  --font-heading--family: regular;
+  --font-accent--family: regular;
+  /* Margin sizes */
+  --font-paragraph--spacing: var(--leading);
+  /* Letter-spacing / Tracking */
+  --letter-spacing--body-normal: 0.125px;
+  /* Typography presets */
+  --font-paragraph--size: 13px;
+  --font-paragraph--line-height: var(--leading);
+}
+/* base.css */
+/* Base text and heading styles */
+body,
+.paragraph:not(.button),
+.paragraph > *,
+.text-block.paragraph :is(h1, h2, h3, h4, h5, h6) {
+  letter-spacing: var(--letter-spacing--body-normal);
+}
+
+/* Links in running text keep a persistent muted underline; hover darkens the underline, not the text.
+   The p and a selectors carry no Horizon hook, so the rule is scoped to the store: on the classless
+   pages --color-foreground-rgb is undefined and the underline fell back to a solid currentcolor over
+   the a rules of the CodePen block above */
+@scope (html:has([id*="shopify"])) {
+  p:not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)),
+  .rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)) {
+    text-decoration-color: rgb(var(--color-foreground-rgb) / 0.125);
+    text-underline-offset: 2px;
+  }
+  p:not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)):hover,
+  p:not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)):focus-visible,
+  .rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)):hover,
+  .rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)):focus-visible {
+    text-decoration-color: rgb(var(--color-foreground-rgb) / 0.25);
+    color: inherit;
+  }
+}
+
+.variant-option + .variant-option {
+  margin-top: var(--leading) !important;
+}
+
+/* The dropdown is exactly 2 leading tall, border included, its text on the baseline */
+.variant-picker .variant-option__select-wrapper {
+  margin-top: 0;
+  height: calc(var(--leading) * 2);
+  border-color: rgb(var(--color-foreground-rgb) / 0.125);
+}
+.variant-picker .variant-option__select-wrapper:hover {
+  border-color: rgb(var(--color-foreground-rgb) / 0.25);
+}
+.variant-picker .variant-option__select-wrapper:hover .variant-option__select {
+  background-color: var(--color-variant-background);
+}
+.variant-picker .variant-option__select-wrapper:focus-within {
+  border-color: rgb(var(--color-foreground-rgb) / 1);
+}
+.variant-picker .variant-option__select {
+  font-size: 13px;
+  line-height: var(--leading);
+  padding-block: calc(var(--leading) / 2 - var(--style-border-width-inputs));
+  padding-inline: calc(var(--leading) * 0.75 - var(--style-border-width-inputs));
+}
+.variant-picker .variant-option__select:focus-visible {
+  outline: none;
+}
