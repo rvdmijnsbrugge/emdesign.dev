@@ -67,7 +67,13 @@
         font-weight: 400;
         font-size: 15px;
       }
+      small {
+        color: rgba(0, 0, 0, 0.5625);
+        margin: 0 0 0 1rem;
+        font-size: 13px;
+      }
       h2 {
+        max-width: 393px;
         margin: 1rem 0 1rem 0;
         font-style: italic;
         line-height: 1rem;
@@ -277,7 +283,7 @@
   </head>
   <body>
     <nav>
-      <h1><a href="#">Em</a></h1>
+      <h1><a href="#">Em</a><small>v0.1.0</small></h1>
       <div>
         <a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">Demo</a>
       </div>
@@ -291,6 +297,8 @@
         <br>
         <a href="#systems">Systems</a>
         <br>
+        <br>
+        <a href="#agents">Agents</a>
         <br>
         <a href="#grid">Grid</a>
         <br>
@@ -349,8 +357,7 @@
     </nav>
     <main>
       <header>
-        <h2>A design system for e-commerce—based on behavioral science, <br>optimized for growth.</h2>
-        <br>
+        <h2>A design system for e-commerce—based on behavioral science, optimized for growth.</h2>
         <br>
         <em><a target="_blank" href="https://rvdmijnsbrugge.myshopify.com/">View the demo</a> &rarr;</em>
         <br>
@@ -436,6 +443,21 @@
         <summary>
           <h3>Systems</h3>
         </summary>
+        <details id="agents" open>
+          <summary>
+            <h4>Agents</h4>
+          </summary>
+          <p>
+            All of our systems are designed to be equally legible and usable by agents and humans.
+          </p>
+          <!-- <aside>
+            Clarity, consistency
+            <br>
+            Kahneman, Cognitive Ease
+            <br>
+            <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Apple, Human Interface Guidelines</a>
+          </aside> -->
+        </details>
         <details id="grid" open>
           <summary>
             <h4>Grid</h4>
@@ -443,13 +465,13 @@
           <p>
             Clarity, consistency, coherence. Baseline grid based on leading. 8 column grid, gutters and margins are responsive multiples of leading.
           </p>
-          <aside>
+          <!-- <aside>
             Clarity, consistency
             <br>
             Kahneman, Cognitive Ease
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Apple, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
         </details>
         <details id="typography" open>
           <summary>
@@ -459,13 +481,13 @@
             Heading 1–6, paragraph & body. 21px leading. 1/8th pixel letter spacing. Antialiased font smoothing.
           </p>
           <!-- <iframe src="typography.html" title="Typography" loading="lazy"></iframe> -->
-          <aside>
+          <!-- <aside>
             Legibility
             <br>
             Kahneman, Cognitive Ease
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Apple, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
         </details>
         <details id="colors" open>
           <summary>
@@ -475,13 +497,13 @@
             Foreground, background, light, and opacity scales. Hover, focus, active states for lines.
           </p>
           <!-- <iframe src="colors.html" title="Colors" loading="lazy"></iframe> -->
-          <aside>
+          <!-- <aside>
             Contrast, feedback
             <br>
             Kahneman, Cognitive Ease
             <br>
             Norman, The Design of Everyday Things
-          </aside>
+          </aside> -->
         </details>
       </details>
       <details id="pages" open>
@@ -501,7 +523,7 @@
           <p>
             Home page should show new arrivals with matching campaign video and imagery so that marketing channels are harmonized. Brands should work with a collections and campaigns content calendar system. New Arrivals show first because that's most likely what a customer seems first from advertizing. After New Arrivals we should show Most Popular, or the products that the customer most likely might be looking for, if not New Arrivals.
           </p>
-          <aside>
+          <!-- <aside>
             Familiarity
             <br>
             Kahneman, Cognitive Ease
@@ -513,7 +535,7 @@
             Deference
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Ive, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
           <!-- <iframe src="home.html" title="Home" loading="lazy"></iframe> -->
         </details>
         <details id="collection" open>
@@ -529,7 +551,7 @@
           <p>
             Collection pages should start with a short paragraph for context around the collection. This is also a great opportunity for brands to highlight some of the unique aspect of their collection, like superior quality or collaborations with artists. Campaign imagery should be mixed in with the products, this will provide visaul context if customers land on the collection page from advertising. It will also give the strongest campaign images a permanent place to live. Additionally, campaign images should be set up as figures with captions, these captions should detail all the products shown in the image, as this has the potential of increasing average order value.
           </p>
-          <aside>
+          <!-- <aside>
             Framing
             <br>
             Thaler, Choice Architecture
@@ -541,7 +563,7 @@
             Knowledge in the world
             <br>
             Norman, The Design of Everyday Things
-          </aside>
+          </aside> -->
           <!-- <iframe src="collection.html" title="Collection" loading="lazy"></iframe> -->
         </details>
         <details id="product" open>
@@ -557,7 +579,7 @@
           <p>
             Product pages should use one variant dropdown so inventory levels can be shown at a glance with one click for all variants. If a product has more than one option, or is a combined product, swatches should be used. Swatches that lead to a sold out variant should show so, to communicate scarcity and urgency accurately. Additionally, carefully curated complementary product should be shown to increase average order value. Besides the main product, all relevant campaign imagery should be presented, showing the product in context, increasing conversion rate and adding all possible other products shown in the campaign images, increasing average order value. Furthermore, related products should be show, giving customers alternative options, in case the currently viewed product was close to what they were looking for, but not quite. For example, products of the same category or of the same brand, increasing conversion rate.
           </p>
-          <aside>
+          <!-- <aside>
             Structured choice
             <br>
             Thaler, Choice Architecture
@@ -569,7 +591,7 @@
             Loss aversion
             <br>
             Kahneman, Prospect Theory
-          </aside>
+          </aside> -->
           <!-- <iframe src="product.html" title="Product" loading="lazy"></iframe> -->
         </details>
       </details>
@@ -582,11 +604,11 @@
             <h4>Header</h4>
           </summary>
           <iframe src="header.html" title="Header" loading="lazy"></iframe>
-          <aside>
+          <!-- <aside>
             Consistency
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Apple, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
         </details>
         <details id="menu" open>
           <summary>
@@ -595,7 +617,7 @@
           <p>
             The menu should show the statistically most likely collection that the user mght be looking for. This would be the most popular collection, keeping in mind this could change rapidly based on trends, virality, or advertizing.
           </p>
-          <aside>
+          <!-- <aside>
             Ordering
             <br>
             Thaler, Choice Architecture
@@ -607,7 +629,7 @@
             Depth
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Ive, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
           <iframe src="menu.html" title="Menu" loading="lazy"></iframe>
         </details>
         <details id="search" open>
@@ -615,11 +637,9 @@
             <h4>Search</h4>
           </summary>
           <p>
-            Popular search terms because we want to save users time typing by putting the most likely search terms infront of them.
-            <br>
-            Trending products to hint at urgency, for example products that went viral on socials and are at risk of selling out. These are different from most popular products shown in the empty cart, those are the products that have the highest chance of being added to cart and converting.
+            Popular search terms because we want to save users time typing by putting the most likely search terms infront of them. Trending products to hint at urgency, for example products that went viral on socials and are at risk of selling out. These are different from most popular products shown in the empty cart, those are the products that have the highest chance of being added to cart and converting.
           </p>
-          <aside>
+          <!-- <aside>
             Knowledge in the world
             <br>
             Norman, The Design of Everyday Things
@@ -627,18 +647,16 @@
             Intelligence
             <br>
             <a target="_blank" href="https://sequoiacap.com/article/services-the-new-software/">Sequoia, Services: The New Software</a>
-          </aside>
+          </aside> -->
           <iframe src="search.html" title="Search" loading="lazy"></iframe>
           <p>
-            Suggestions for search terms that might be incomplete as the user types, again trying to save tehm effort typing.
-            <br>
-            Results are what we really want the user to do click on one of the products resulting from the search and hopefully convert.
+            Suggestions for search terms that might be incomplete as the user types, again trying to save tehm effort typing. Results are what we really want the user to do click on one of the products resulting from the search and hopefully convert.
           </p>
-          <aside>
+          <!-- <aside>
             Expect error
             <br>
             Thaler, Choice Architecture
-          </aside>
+          </aside> -->
           <iframe src="results.html" title="Results" loading="lazy"></iframe>
         </details>
         <details id="filters" open>
@@ -648,7 +666,7 @@
           <p>
             Opening with these detailed availability filter emphasises urgency and scarcity, further amplifying the badge overlays, size hover previews, and size dropdowns showing limited inventory.
           </p>
-          <aside>
+          <!-- <aside>
             Structured choice
             <br>
             Thaler, Choice Architecture
@@ -656,7 +674,7 @@
             Loss aversion
             <br>
             Kahneman, Prospect Theory
-          </aside>
+          </aside> -->
           <iframe src="filters.html" title="Filters" loading="lazy"></iframe>
         </details>
         <details id="cart" open>
@@ -667,11 +685,11 @@
           <p>
             Empty cart shows all time most popular products, those with the highest conversion rate, and chance of being added to cart together with a text link to the most popular collection that serves as a view all to the most popular products.
           </p>
-          <aside>
+          <!-- <aside>
             Transaction signal
             <br>
             <a target="_blank" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/">Sequoia, From Hierarchy to Intelligence</a>
-          </aside>
+          </aside> -->
           <iframe src="empty.html" title="Empty cart" loading="lazy"></iframe>
         </details>
         <details id="footer" open>
@@ -679,11 +697,11 @@
             <h4>Footer</h4>
           </summary>
           <iframe src="footer.html" title="Footer" loading="lazy"></iframe>
-          <aside>
+          <!-- <aside>
             Incentives
             <br>
             Thaler, Choice Architecture
-          </aside>
+          </aside> -->
         </details>
         <details id="figures" open>
           <summary>
@@ -692,7 +710,7 @@
           <p>
             Figures should show campaign videos and imagery in a manner that is harmonized with all marketing channels. Caption can be below or overlayed and should detail all products shown in the image or video, increasing average order value.
           </p>
-          <aside>
+          <!-- <aside>
             Familiarity
             <br>
             Kahneman, Cognitive Ease
@@ -700,7 +718,7 @@
             Deference
             <br>
             <a target="_blank" href="https://developer.apple.com/design/human-interface-guidelines/">Ive, Human Interface Guidelines</a>
-          </aside>
+          </aside> -->
           <iframe src="figures.html" title="Overlay" loading="lazy"></iframe>
         </details>
         <details id="products" open>
@@ -710,7 +728,7 @@
           <p>
             Products should show variants like size, clearly marking those sold out, and swatches communicating scarcity, demand, and urgency in a similar manner.
           </p>
-          <aside>
+          <!-- <aside>
             Signifiers
             <br>
             Norman, The Design of Everyday Things
@@ -718,7 +736,7 @@
             Loss aversion
             <br>
             Kahneman, Prospect Theory
-          </aside>
+          </aside> -->
           <iframe src="products.html" title="Product card" loading="lazy"></iframe>
         </details>
       </details>
@@ -731,7 +749,10 @@
             <h4>Simon</h4>
           </summary>
           <p>
-            The Science of Design. More coming soon.
+            The Science of Design.
+            <br>
+            <br>
+            Coming soon.
           </p>
           <aside>
             <a target="_blank" href="https://awards.acm.org/award_winners/simon_1031467">Turing Award, 1975</a>
@@ -748,7 +769,10 @@
             <h4>Mokyr</h4>
           </summary>
           <p>
-            Sustained growth. More coming soon.
+            Sustained growth.
+            <br>
+            <br>
+            Coming soon.
           </p>
           <aside>
             <a target="_blank" href="https://www.nobelprize.org/prizes/economic-sciences/2025/mokyr">Nobel Prize, 2025</a>
@@ -763,7 +787,10 @@
             <h4>Kahneman</h4>
           </summary>
           <p>
-            Cognitive Ease. More coming soon.
+            Cognitive Ease.
+            <br>
+            <br>
+            Coming soon.
           </p>
           <aside>
             <a target="_blank" href="https://www.nobelprize.org/prizes/economic-sciences/2002/kahneman">Nobel Prize, 2002</a>
@@ -778,7 +805,10 @@
             <h4>Thaler</h4>
           </summary>
           <p>
-            Choice Architecture. More coming soon.
+            Choice Architecture.
+            <br>
+            <br>
+            Coming soon.
           <aside>
             <a target="_blank" href="https://www.nobelprize.org/prizes/economic-sciences/2017/thaler">Nobel Prize, 2017</a>
             <br>
@@ -792,7 +822,10 @@
             <h4>Norman</h4>
           </summary>
           <p>
-            User Experience. More coming soon.
+            User Experience.
+            <br>
+            <br>
+            Coming soon.
           </p>
           <aside>
             The Design of Everyday Things
@@ -807,7 +840,10 @@
             <h4>Ive</h4>
           </summary>
           <p>
-            Human Interface Guidelines. More coming soon.
+            Human Interface Guidelines.
+            <br>
+            <br>
+            Coming soon.
           </p>
           <aside>
             Dieter Rams: As Little Design as Possible, foreword
